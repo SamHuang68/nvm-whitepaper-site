@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NVM IP Interactive Portal & White Paper Hub</title>
+  <meta name="description" content="Semiconductor Non-Volatile Memory (NVM) IP Knowledge Base, Logic OTP/MTP Technical Whitepaper, and Product Comparison Portal for SharePoint Embedding.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles/main.css">
+  <link rel="stylesheet" href="./src/styles/components.css">
+  <link rel="stylesheet" href="./src/styles/portal.css">
+</head>
+<body>
+
+  <!-- Phase-5 Interactive Portal Navigation Header -->
+  <header class="portal-header">
+    <div class="portal-logo">
+      <span>⚡</span> NVM Marketing Hub
+    </div>
+    
+    <nav class="portal-nav-tabs">
+      <button class="tab-btn active" data-phase="phase1">Phase-1: Knowledge Base</button>
+      <button class="tab-btn" data-phase="phase2">Phase-2: White Paper</button>
+      <button class="tab-btn" data-phase="phase3">Phase-3: Templates</button>
+      <button class="tab-btn" data-phase="phase4">Phase-4: Metadata</button>
+      <button class="tab-btn" data-phase="matrix">Interactive Matrix</button>
+    </nav>
+  </header>
+
+  <!-- Main Portal Content Container -->
+  <main class="portal-content">
+    <section id="panel-phase1" class="phase-panel active"></section>
+    <section id="panel-phase2" class="phase-panel"></section>
+    <section id="panel-phase3" class="phase-panel"></section>
+    <section id="panel-phase4" class="phase-panel"></section>
+    <section id="panel-matrix" class="phase-panel"></section>
+  </main>
+
+  <script type="module" src="./src/js/app.js"></script>
+</body>
+</html>

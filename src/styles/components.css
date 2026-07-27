@@ -1,0 +1,112 @@
+/* Components: Reader, Table Matrix, Tags, Watermark */
+
+/* Internal Confidential Watermark */
+#watermark-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200'><text x='20' y='100' fill='white' font-size='16' font-family='sans-serif' transform='rotate(-25 150 100)'>INTERNAL CONFIDENTIAL - NVM IP</text></svg>");
+  background-repeat: repeat;
+}
+
+/* Phase Badge */
+.phase-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(0, 242, 254, 0.12);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+}
+
+/* Table Specs Matrix */
+.matrix-table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.matrix-table th {
+  background: rgba(18, 24, 36, 0.9);
+  padding: 1rem;
+  color: var(--accent-cyan);
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+}
+
+.matrix-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.matrix-table tr:hover td {
+  background: rgba(0, 242, 254, 0.03);
+  color: var(--text-primary);
+}
+
+/* Tag Pills */
+.tag-pill {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  margin-right: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.tag-pill:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-cyan);
+}
+
+/* Reader Sidebar & Progress */
+.reader-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.reader-toc {
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+  padding: 1.25rem;
+}
+
+.toc-item {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border-left: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.toc-item.active, .toc-item:hover {
+  border-left-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.05);
+}
