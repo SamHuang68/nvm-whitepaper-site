@@ -1,79 +1,44 @@
-/**
- * Interactive NVM IP Specification Comparison Matrix
- */
-
 import { nvmIpSpecs } from '../../data/nvm_specs.js';
 
-export function renderMatrix(containerEl) {
-  if (!containerEl) return;
-
-  containerEl.innerHTML = `
-    <div style="margin-bottom: 2rem;">
-      <span class="phase-badge">Interactive Tool</span>
-      <h2 style="font-size: 2rem; margin-top: 0.5rem; color: #fff;">NVM IP Product & PPA Comparison Matrix</h2>
-      <p style="color: var(--text-secondary);">Filter and compare silicon-proven Logic OTP, Logic MTP, eFlash, and PUF IP macros across process nodes.</p>
-    </div>
-
-    <!-- Filters -->
-    <div class="glass-card" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-      <span style="font-size: 0.85rem; font-weight: 700; color: var(--accent-cyan);">FILTER BY:</span>
-      <select id="filter-type" style="background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: 4px;">
-        <option value="ALL">All NVM Types</option>
-        <option value="Logic OTP">Logic OTP</option>
-        <option value="Logic MTP">Logic MTP</option>
-        <option value="Embedded Flash">Embedded Flash</option>
-        <option value="PUF Security">PUF Security</option>
-      </select>
-    </div>
-
-    <div class="matrix-table-container">
-      <table class="matrix-table">
-        <thead>
-          <tr>
-            <th>IP Macro Name</th>
-            <th>Type</th>
-            <th>Foundry Node</th>
-            <th>Density Range</th>
-            <th>Extra Masks</th>
-            <th>Read Voltage</th>
-            <th>Data Retention</th>
-            <th>AEC Qualification</th>
-            <th>Area / Kb</th>
-          </tr>
-        </thead>
-        <tbody id="matrix-body">
-          ${renderTableRows(nvmIpSpecs)}
-        </tbody>
+export function renderMatrix(container) {
+  if (!container) return;
+  container.innerHTML = `
+    <header class="panel-heading selector-heading">
+      <div><p class="eyebrow dark">03 · DECISION MATRIX</p><h2>Compare the state contract<br><em>before comparing a macro</em></h2></div>
+      <p>These are public decision profiles—not vendor products. Filter by NVM family, then validate the evidence gap for the target process.</p>
+    </header>
+    <section class="selector-controls" aria-label="Decision matrix filters">
+      <label for="filter-family"><span>FILTER BY TECHNOLOGY FAMILY</span><select id="filter-family"><option value="ALL">All public profiles</option>${[...new Set(nvmIpSpecs.map((item) => item.family))].map((family) => `<option value="${family}">${family}</option>`).join('')}</select></label>
+      <p><b>${nvmIpSpecs.length}</b><span>ILLUSTRATIVE PROFILES</span></p>
+      <p><b>0</b><span>UNQUALIFIED PRODUCT CLAIMS</span></p>
+    </section>
+    <div class="decision-table-wrap">
+      <table class="decision-table">
+        <caption>Illustrative NVM selection profiles with explicit evidence boundaries</caption>
+        <thead><tr><th scope="col">State profile</th><th scope="col">Technology family</th><th scope="col">State contract</th><th scope="col">Process lens</th><th scope="col">Strongest fit</th><th scope="col">Boundary</th><th scope="col">Evidence status</th></tr></thead>
+        <tbody id="decision-body">${renderRows(nvmIpSpecs)}</tbody>
       </table>
     </div>
+    <aside class="selector-gate"><div><p>SELECTION GATE</p><h3>A categorical fit is not a qualification result</h3></div><ol><li><b>01</b><span>Confirm device and voltage options</span></li><li><b>02</b><span>Bind retention and endurance to mission profile</span></li><li><b>03</b><span>Close PVT, test and security evidence on target silicon</span></li></ol></aside>
   `;
 
-  // Attach filter event listener
-  const filterSelect = document.getElementById('filter-type');
-  if (filterSelect) {
-    filterSelect.addEventListener('change', (e) => {
-      const selected = e.target.value;
-      const filtered = selected === 'ALL' 
-        ? nvmIpSpecs 
-        : nvmIpSpecs.filter(item => item.type === selected);
-      
-      document.getElementById('matrix-body').innerHTML = renderTableRows(filtered);
-    });
-  }
+  container.querySelector('#filter-family')?.addEventListener('change', (event) => {
+    const value = event.target.value;
+    const items = value === 'ALL' ? nvmIpSpecs : nvmIpSpecs.filter((item) => item.family === value);
+    container.querySelector('#decision-body').innerHTML = renderRows(items);
+  });
 }
 
-function renderTableRows(items) {
-  return items.map(item => `
+function renderRows(items) {
+  return items.map((item) => `
     <tr>
-      <td style="font-weight: 700; color: #fff;">${item.name}</td>
-      <td><span class="tag-pill" style="color: var(--accent-cyan); border-color: rgba(0,242,254,0.3);">${item.type}</span></td>
-      <td>${item.node}</td>
-      <td>${item.density}</td>
-      <td style="color: ${item.extraMasks === 0 ? '#4ade80' : '#f87171'}; font-weight: 700;">${item.extraMasks} Adders</td>
-      <td>${item.readVoltage}</td>
-      <td>${item.retention}</td>
-      <td>${item.grade}</td>
-      <td>${item.areaPerKb}</td>
+      <th scope="row" data-label="STATE PROFILE">${item.profile}<small>${item.updateModel}</small></th>
+      <td data-label="TECHNOLOGY FAMILY"><span class="family-chip">${item.family}</span></td>
+      <td data-label="STATE CONTRACT">${item.contract}</td>
+      <td data-label="PROCESS LENS">${item.nodeLens}</td>
+      <td data-label="STRONGEST FIT">${item.strongestFit}</td>
+      <td data-label="BOUNDARY">${item.boundary}</td>
+      <td data-label="EVIDENCE STATUS"><span class="status-chip">${item.evidenceStatus}</span></td>
     </tr>
   `).join('');
 }

@@ -1,54 +1,37 @@
-/**
- * Phase-2: Interactive White Paper Reader Module
- */
-
 import { phase2Whitepaper } from '../../data/phase2_paper.js';
 
-export function renderPhase2Reader(containerEl) {
-  if (!containerEl) return;
-
+export function renderPhase2Reader(container) {
+  if (!container) return;
   const { title, subtitle, author, version, publishDate, chapters } = phase2Whitepaper;
 
-  containerEl.innerHTML = `
-    <div style="margin-bottom: 2rem;">
-      <span class="phase-badge">Phase-2 Technical White Paper</span>
-      <h2 style="font-size: 2.2rem; margin-top: 0.5rem; color: #fff; line-height: 1.2;">${title}</h2>
-      <p style="color: var(--accent-cyan); font-size: 1.1rem; margin-top: 0.5rem;">${subtitle}</p>
-      <div style="display: flex; gap: 1.5rem; margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem;">
-        <span>✍️ ${author}</span>
-        <span>🏷️ ${version}</span>
-        <span>📅 ${publishDate}</span>
-      </div>
-    </div>
-
-    <div class="reader-container">
-      <!-- Table of Contents Sidebar -->
-      <div class="glass-card reader-toc">
-        <h4 style="color: var(--accent-blue); margin-bottom: 1rem; font-size: 0.95rem;">CHAPTERS</h4>
-        <nav id="toc-nav">
-          ${chapters.map((ch, idx) => `
-            <a href="#chap-${ch.id}" class="toc-item ${idx === 0 ? 'active' : ''}">
-              <span style="font-weight: 700; opacity: 0.6; margin-right: 0.4rem;">${ch.number}</span> ${ch.title.split('&')[0]}
-            </a>
-          `).join('')}
+  container.innerHTML = `
+    <header class="paper-heading">
+      <p class="eyebrow dark">02 · TECHNICAL WHITEPAPER</p>
+      <h2>${title}</h2>
+      <p>${subtitle}</p>
+      <dl><div><dt>EDITORIAL OWNER</dt><dd>${author}</dd></div><div><dt>STATUS</dt><dd>${version}</dd></div><div><dt>REVIEW DATE</dt><dd>${publishDate}</dd></div></dl>
+    </header>
+    <div class="reader-layout">
+      <aside class="reader-index">
+        <p>CHAPTER INDEX</p>
+        <nav aria-label="Whitepaper chapters">
+          ${chapters.map((chapter) => `<a href="#chap-${chapter.id}"><b>${chapter.number}</b><span>${chapter.title}</span></a>`).join('')}
         </nav>
-      </div>
-
-      <!-- Main Whitepaper Content -->
-      <div style="display: flex; flex-direction: column; gap: 2rem;">
-        ${chapters.map(ch => `
-          <div id="chap-${ch.id}" class="glass-card" style="padding: 2rem;">
-            <div style="color: var(--accent-cyan); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.1em; margin-bottom: 0.4rem;">
-              CHAPTER ${ch.number}
-            </div>
-            <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-              ${ch.title}
-            </h3>
-            <div style="color: var(--text-secondary); line-height: 1.8; font-size: 0.98rem; white-space: pre-line;">
-              ${ch.content}
-            </div>
-          </div>
+        <div class="reader-boundary"><b>PUBLIC EVIDENCE RULE</b><span>Exact specifications require a source, scope and limitation. Otherwise this paper uses architecture-level language.</span></div>
+      </aside>
+      <div class="paper-body">
+        ${chapters.map((chapter) => `
+          <article id="chap-${chapter.id}" class="paper-chapter">
+            <header><p>CHAPTER ${chapter.number}</p><h3>${chapter.title}</h3><strong>${chapter.lede}</strong></header>
+            <div class="chapter-copy">${chapter.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
+            <div class="chapter-takeaways"><p>ARCHITECTURE TAKEAWAYS</p><ul>${chapter.takeaways.map((item) => `<li>${item}</li>`).join('')}</ul></div>
+            <dl class="evidence-contract"><div><dt>EVIDENCE CLASS</dt><dd>${chapter.evidenceClass}</dd></div><div><dt>LIMITATION</dt><dd>${chapter.limitation}</dd></div></dl>
+          </article>
         `).join('')}
+        <aside class="paper-sources">
+          <div><p>CONTINUE THE EVIDENCE TRAIL</p><h3>Use the Hub to separate source facts from architecture inference</h3></div>
+          <nav><a href="https://samhuang68.github.io/secure-storage-knowledge-hub/memory-evidence.html">Open Evidence Ledger <span>↗</span></a><a href="https://samhuang68.github.io/secure-storage-knowledge-hub/memory-physics.html">Review Memory Physics <span>↗</span></a></nav>
+        </aside>
       </div>
     </div>
   `;

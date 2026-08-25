@@ -1,5 +1,11 @@
 node_modules/
 dist/
-.DS_Store
-*.local
+.vite/
+*.log
+qa-output/
 .env
+.env.*
+!.env.example
+*.local
+.DS_Store
+.loop-engineering/rendered-*/

@@ -1,105 +1,121 @@
-/**
- * Phase-1: NVM Knowledge Base Data
- * Covers Applications, Foundry Intelligence, and Competitor Matrix.
- */
-
 export const phase1KnowledgeBase = {
-  applications: [
+  stateContracts: [
     {
-      id: 'automotive',
-      title: 'Automotive & Mobility (Grade 0/1)',
-      icon: '🚗',
-      description: 'Zero-defect requirements with operational temp up to 150°C and 10+ years retention.',
-      keyMetrics: { retention: '10+ Years @ 150°C', endurance: '100K Cycles', zeroDefect: 'AEC-Q100 Grade 0' },
-      useCases: ['Trim Bit Storage', 'Engine Control Units (ECU)', 'ADAS Sensor Calibration', 'Battery Management (BMS)'],
-      techReq: 'High Reliability, Zero Extra Mask, Extended Temperature Tolerance'
+      id: 'identity',
+      number: '01',
+      contract: 'Immutable identity',
+      role: 'Device identity, lifecycle state and boot trust anchors',
+      owner: 'Provisioning authority',
+      updateCadence: 'Program once; verify throughout life',
+      selectionQuestion: 'Can the state ever be rotated, revoked or recovered?',
+      evidenceBoundary: 'Threat model and provisioning flow must be explicit before selecting OTP.'
     },
     {
-      id: 'ai_mcu',
-      title: 'Edge AI & Microcontrollers (MCU)',
-      icon: '🧠',
-      description: 'Ultra-low latency weight storage and security key storage for edge neural accelerators.',
-      keyMetrics: { latency: '<15ns Read', power: 'Sub-uA Standby', density: '256Kb - 16Mb' },
-      useCases: ['AI Model Weights', 'Secure Boot Keys', 'Code Storage (XIP)', 'Feature Configuration'],
-      techReq: 'High Speed Read, Low Read Power, High Security Against DPA Attacks'
+      id: 'calibration',
+      number: '02',
+      contract: 'Bounded calibration',
+      role: 'Trim, remap, analog compensation and configuration',
+      owner: 'Manufacturing or hardware controller',
+      updateCadence: 'Rare, controlled updates',
+      selectionQuestion: 'How many updates are required after test, package and field aging?',
+      evidenceBoundary: 'Endurance, write energy and high-voltage availability are use-case specific.'
     },
     {
-      id: 'iot',
-      title: 'Ultra-Low Power IoT & Wearables',
-      icon: '⌚',
-      description: 'Energy-harvesting and battery-constrained devices requiring sub-uA sleep currents.',
-      keyMetrics: { power: '0.1uA Standby', voltage: '0.9V - 3.6V Wide Range', cost: 'Minimum Silicon Area' },
-      useCases: ['BLE Beacon Config', 'Medical Wearable Logs', 'Smart Metering Calibration', 'RF Tag IDs'],
-      techReq: 'Logic OTP/MTP, Smallest Footprint, Standard CMOS Process Compatibility'
+      id: 'firmware',
+      number: '03',
+      contract: 'Adaptive firmware',
+      role: 'Boot code, patches, policy and feature configuration',
+      owner: 'Secure update service',
+      updateCadence: 'Managed change with rollback or recovery',
+      selectionQuestion: 'Does capacity and update frequency justify an embedded array?',
+      evidenceBoundary: 'Separate code-storage needs from immutable security state.'
     },
     {
-      id: 'smartcard',
-      title: 'Smart Card & Secure Elements',
-      icon: '💳',
-      description: 'Cryptographic chipsets requiring high anti-tamper security and multi-OTP key protection.',
-      keyMetrics: { security: 'Anti-DPA / Anti-Laser', writeVoltage: 'On-chip Charge Pump', endurance: '10K Cycles' },
-      useCases: ['Banking SIM/eSIM', 'Government ID', 'Hardware Crypto Keys', 'Payment Terminals'],
-      techReq: 'High Security OTP, Physical Unclonable Function (PUF) Integration'
+      id: 'operations',
+      number: '04',
+      contract: 'Operational evidence',
+      role: 'Repair history, RAS logs, counters and field learning',
+      owner: 'Platform controller',
+      updateCadence: 'Repeated writes over system life',
+      selectionQuestion: 'Which state must survive power loss, service events or module replacement?',
+      evidenceBoundary: 'System retention and recovery may be more important than bit-cell density.'
     }
   ],
 
-  foundryIntelligence: [
+  technologyFamilies: [
     {
-      foundry: 'TSMC',
-      nodes: ['80nm', '40nm', '28nm HPC+', '22nm ULP/ULL', '12nm FFC'],
-      features: 'High yield maturity, logic-compatible OTP/MTP IP qualification across BCD, HV, and ULP nodes.',
-      advantage: 'Zero additional mask steps needed for standard Logic OTP/MTP cores.'
+      family: 'OTP',
+      mechanism: 'One-time physical state transition',
+      strongestFit: 'Immutable and monotonic state',
+      processLens: 'Broad logic-node reach; implementation is provider specific',
+      limit: 'A written bit cannot become an update policy by itself',
+      status: 'Architecture baseline'
     },
     {
-      foundry: 'UMC',
-      nodes: ['110nm', '55nm ULP', '40nm LP', '22nm ULP'],
-      features: 'Robust automotive Grade 1 qualification, competitive PPA for IoT eNVM.',
-      advantage: 'Cost-effective OTP/MTP macros with built-in high voltage pumps.'
+      family: 'MTP / EEPROM class',
+      mechanism: 'Reprogrammable charge-based state',
+      strongestFit: 'Bounded calibration and small firmware state',
+      processLens: 'High-voltage and oxide options constrain portability',
+      limit: 'Endurance, programming supply and retention must be jointly qualified',
+      status: 'Public evidence needed per process'
     },
     {
-      foundry: 'GlobalFoundries',
-      nodes: ['130nm BCD', '55nm ULP', '22FDX (FD-SOI)'],
-      features: 'Ultra-low voltage read capabilities suited for FD-SOI body-bias optimizations.',
-      advantage: 'Low-power read operation below 0.8V.'
+      family: 'Embedded Flash',
+      mechanism: 'Dedicated embedded charge-storage integration',
+      strongestFit: 'Code-rich embedded systems',
+      processLens: 'Commercial fit is shaped by mask cost and process-development complexity',
+      limit: 'Node migration is an economics and integration decision—not a simple shrink',
+      status: 'Node-specific decision'
+    },
+    {
+      family: 'MRAM / ReRAM',
+      mechanism: 'Magnetic or resistive state',
+      strongestFit: 'Advanced-node embedded NVM where available',
+      processLens: 'Foundry module, density and qualification status dominate',
+      limit: 'Availability does not automatically establish application readiness',
+      status: 'Evidence varies by platform'
+    },
+    {
+      family: 'SRAM PUF + crypto',
+      mechanism: 'Power-up-derived secret plus cryptographic protection',
+      strongestFit: 'Companion security layer above persistent ciphertext',
+      processLens: 'System architecture rather than a peer storage medium',
+      limit: 'Reliability, helper data and attack assurance still require validation',
+      status: 'Companion architecture'
     }
   ],
 
-  competitorMatrix: [
+  processLenses: [
     {
-      type: 'Logic OTP (Antifuse / Poly Fuse)',
-      maskCount: '0 (Standard Logic)',
-      costIndex: '1.0x (Baseline)',
-      readSpeed: '<10 ns',
-      retention: '10 Years @ 150°C',
-      yieldRisk: 'Very Low',
-      bestFor: 'Trim bits, Security Keys, Single-write Chip IDs'
+      range: 'MATURE & SPECIALTY',
+      title: 'Start with the available voltage and device stack',
+      body: 'For power, BCD, sensor and interface products, I/O devices and programming-voltage generation often define the feasible NVM set before density does.',
+      decision: 'Validate I/O voltage, charge pump, test flow and retention together.'
     },
     {
-      type: 'Logic MTP (Floating Gate / Charge Trap)',
-      maskCount: '0 (Standard Logic)',
-      costIndex: '1.1x',
-      readSpeed: '<15 ns',
-      retention: '10 Years @ 125°C',
-      yieldRisk: 'Low',
-      bestFor: 'Field-updatable Parameters, Calibration, Microcode Updates'
+      range: 'eFLASH TRANSITION',
+      title: 'Treat scaling as an integration-economics boundary',
+      body: 'Conventional embedded-flash commercialization is widely associated with the 28 nm generation. Crossing that boundary is not a hard physics cliff; mask count, development effort and manufacturing economics shape adoption.',
+      decision: 'Keep vendor-specific mask-stack detail in the internal evidence layer.'
     },
     {
-      type: 'Embedded Flash (eFlash)',
-      maskCount: '+8 to +12 Extra Masks',
-      costIndex: '1.4x - 1.6x',
-      readSpeed: '<20 ns',
-      retention: '10 Years @ 125°C',
-      yieldRisk: 'Medium (Thermal Budget Impact)',
-      bestFor: 'Large Code Storage (>4MB) on legacy nodes (>40nm)'
+      range: 'ADVANCED NODE',
+      title: 'Decouple read supply from program infrastructure',
+      body: 'A single-VDD read path can simplify always-on and low-voltage domains, while programming may still require an I/O-derived foundation for an internal charge pump.',
+      decision: 'Specify read and program power contracts separately.'
     },
     {
-      type: 'Emerging NVM (ReRAM / MRAM)',
-      maskCount: '+3 to +5 Extra Masks',
-      costIndex: '1.3x - 1.5x',
-      readSpeed: '<10 ns',
-      retention: '10 Years @ 105°C',
-      yieldRisk: 'High (Process Scaling Challenges)',
-      bestFor: 'High-density Edge AI Weights on FinFET nodes'
+      range: 'LEADING EDGE & CHIPLET',
+      title: 'Move from one macro to a distributed state architecture',
+      body: 'Identity, repair, calibration, firmware and operational logs may reside in different dies or controllers. The selection unit becomes the system state contract, not a single NVM array.',
+      decision: 'Define ownership, trust boundary and recovery before technology.'
     }
+  ],
+
+  selectionSequence: [
+    { step: '01', name: 'Name the state', detail: 'What survives power loss—and why?' },
+    { step: '02', name: 'Assign ownership', detail: 'Who may create, update, revoke or recover it?' },
+    { step: '03', name: 'Constrain the process', detail: 'Which node, voltage and integration options actually exist?' },
+    { step: '04', name: 'Close the evidence gap', detail: 'What is sourced, inferred or still target-silicon dependent?' }
   ]
 };

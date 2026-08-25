@@ -1,16 +1,15 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: './',
+  base: process.env.GITHUB_ACTIONS ? '/nvm-whitepaper-site/' : './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'esbuild',
   },
   server: {
-    port: 3000,
-    open: true,
+    port: 4175,
+    open: false,
   },
 });
 

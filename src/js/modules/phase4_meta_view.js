@@ -1,50 +1,40 @@
-/**
- * Phase-4: Metadata & Taxonomy Module
- */
-
 import { phase4Metadata } from '../../data/phase4_metadata.js';
 
-export function renderPhase4Metadata(containerEl) {
-  if (!containerEl) return;
+export function renderPhase4Metadata(container) {
+  if (!container) return;
+  const { canonicalFields, operationalFields, publicRecords } = phase4Metadata;
 
-  const { taxonomyGroups, searchIndex } = phase4Metadata;
-
-  containerEl.innerHTML = `
-    <div style="margin-bottom: 2rem;">
-      <span class="phase-badge">Phase-4 Metadata & Taxonomy</span>
-      <h2 style="font-size: 2rem; margin-top: 0.5rem; color: #fff;">SharePoint Metadata & Tagging Architecture</h2>
-      <p style="color: var(--text-secondary);">Structured tags for enterprise searchability, filtering, and automated content discovery.</p>
-    </div>
-
-    <!-- Taxonomy Groups -->
-    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">1. Enterprise Taxonomy Taxonomy Groups</h3>
-    <div class="grid-2" style="margin-bottom: 2.5rem;">
-      ${taxonomyGroups.map(grp => `
-        <div class="glass-card" style="padding: 1.25rem;">
-          <h4 style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.75rem;">${grp.category}</h4>
-          <div>
-            ${grp.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}
-          </div>
-        </div>
-      `).join('')}
-    </div>
-
-    <!-- Search Index Preview -->
-    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">2. SharePoint Search Index Tagging Preview</h3>
-    <div class="glass-card" style="padding: 1.5rem;">
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        ${searchIndex.map(item => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border-color);">
-            <div>
-              <h4 style="color: #fff; font-size: 0.98rem; margin-bottom: 0.3rem;">${item.title}</h4>
-              <div>
-                ${item.tags.map(t => `<span class="tag-pill" style="font-size: 0.7rem;">${t}</span>`).join('')}
-              </div>
-            </div>
-            <button class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Inspect JSON-LD</button>
-          </div>
+  container.innerHTML = `
+    <header class="panel-heading taxonomy-heading">
+      <div><p class="eyebrow dark">04 · SHAREPOINT TAXONOMY</p><h2>Transfer a governed knowledge model,<br><em>not a folder of pages</em></h2></div>
+      <p>The same eight fields organize public research now and restricted corporate evidence later. Operational fields add ownership without changing the content spine.</p>
+    </header>
+    <section class="content-section" aria-labelledby="canonical-title">
+      <div class="section-label"><span>01</span><div><p>CANONICAL CONTENT CONTRACT</p><h3 id="canonical-title">Eight fields every NVM asset keeps</h3></div></div>
+      <ol class="schema-flow">
+        ${canonicalFields.map((item, index) => `<li><span>${String(index + 1).padStart(2, '0')}</span><div><h4>${item.field}</h4><p>${item.purpose}</p><small>EXAMPLE · ${item.example}</small></div></li>`).join('')}
+      </ol>
+    </section>
+    <section class="content-section operational-section" aria-labelledby="operations-title">
+      <div class="section-label"><span>02</span><div><p>OPERATIONAL LAYER</p><h3 id="operations-title">Fields that make the system maintainable</h3></div></div>
+      <div class="operational-fields">${operationalFields.map((field, index) => `<span><b>${String(index + 1).padStart(2, '0')}</b>${field}</span>`).join('')}</div>
+    </section>
+    <section class="content-section" aria-labelledby="records-title">
+      <div class="section-label"><span>03</span><div><p>PUBLIC RECORD PREVIEW</p><h3 id="records-title">Safe examples for the future SharePoint library</h3></div></div>
+      <div class="record-grid">
+        ${publicRecords.map((item) => `
+          <article>
+            <header><span>${item.id}</span><b>${item.status}</b></header>
+            <h4>${item.title}</h4>
+            <dl><div><dt>TECHNOLOGY</dt><dd>${item.technology}</dd></div><div><dt>STATE CONTRACT</dt><dd>${item.contract}</dd></div><div><dt>APPLICATION</dt><dd>${item.domain}</dd></div><div><dt>PROCESS NODE</dt><dd>${item.node}</dd></div><div><dt>EVIDENCE CLASS</dt><dd>${item.evidence}</dd></div></dl>
+            <p><b>LIMITATION</b>${item.limitation}</p>
+          </article>
         `).join('')}
       </div>
-    </div>
+    </section>
+    <aside class="sharepoint-transfer">
+      <div><p>TRANSFER MODEL</p><h3>Public architecture now<br>Restricted evidence later</h3></div>
+      <p>The company SharePoint edition can extend each record with foundry qualification, customer context, validation artifacts and confidential product data. Copilot then retrieves content through stable metadata and permissions.</p>
+    </aside>
   `;
 }

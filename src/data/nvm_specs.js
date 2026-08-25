@@ -1,58 +1,57 @@
-/**
- * NVM IP Specs for Interactive Comparison Matrix
- */
-
 export const nvmIpSpecs = [
   {
-    name: 'NeoOTP-28HPC+',
-    type: 'Logic OTP',
-    node: '28nm HPC+',
-    density: '64Kb - 512Kb',
-    extraMasks: 0,
-    readVoltage: '0.9V',
-    readLatency: '8 ns',
-    retention: '10 Years @ 150°C',
-    endurance: '1 Cycle',
-    grade: 'AEC-Q100 Grade 0',
-    areaPerKb: '0.0012 mm²'
+    id: 'immutable',
+    profile: 'Immutable identity',
+    family: 'OTP',
+    contract: 'Program once; verify throughout life',
+    nodeLens: 'Broad logic-node applicability; provider-specific implementation',
+    updateModel: 'None or monotonic lifecycle transition',
+    strongestFit: 'Boot trust, device identity, lifecycle state',
+    boundary: 'Rotation and recovery require a system-level mechanism',
+    evidenceStatus: 'Architecture baseline'
   },
   {
-    name: 'NeoMTP-40LP',
-    type: 'Logic MTP',
-    node: '40nm LP',
-    density: '16Kb - 256Kb',
-    extraMasks: 0,
-    readVoltage: '1.1V',
-    readLatency: '12 ns',
-    retention: '10 Years @ 125°C',
-    endurance: '1,000 Cycles',
-    grade: 'AEC-Q100 Grade 1',
-    areaPerKb: '0.0035 mm²'
+    id: 'bounded',
+    profile: 'Bounded calibration',
+    family: 'MTP / EEPROM class',
+    contract: 'Rare, controlled updates',
+    nodeLens: 'Constrained by device stack, programming supply and process option',
+    updateModel: 'Manufacturing plus limited field changes',
+    strongestFit: 'Trim, remap, calibration tables',
+    boundary: 'Endurance and retention must be qualified together',
+    evidenceStatus: 'Platform evidence required'
   },
   {
-    name: 'eFlash-40ULP',
-    type: 'Embedded Flash',
-    node: '40nm ULP',
-    density: '512Kb - 4Mb',
-    extraMasks: 10,
-    readVoltage: '1.2V',
-    readLatency: '20 ns',
-    retention: '10 Years @ 125°C',
-    endurance: '100,000 Cycles',
-    grade: 'AEC-Q100 Grade 1',
-    areaPerKb: '0.0008 mm²'
+    id: 'code',
+    profile: 'Code-rich embedded state',
+    family: 'Embedded Flash',
+    contract: 'Managed firmware updates',
+    nodeLens: 'Commercial fit depends on integration and mask economics',
+    updateModel: 'Signed update with recovery path',
+    strongestFit: 'Embedded code and larger configuration sets',
+    boundary: 'Do not treat the 28 nm commercialization boundary as a physics law',
+    evidenceStatus: 'Node-specific decision'
   },
   {
-    name: 'NeoPUF-22ULP',
-    type: 'PUF Security',
-    node: '22nm ULP',
-    density: '1Kb - 16Kb',
-    extraMasks: 0,
-    readVoltage: '0.8V',
-    readLatency: '5 ns',
-    retention: '15 Years @ 150°C',
-    endurance: '1 Cycle',
-    grade: 'AEC-Q100 Grade 0',
-    areaPerKb: '0.0010 mm²'
+    id: 'advanced',
+    profile: 'Advanced-node embedded state',
+    family: 'MRAM / ReRAM',
+    contract: 'Adaptive or code-bearing state',
+    nodeLens: 'Foundry module and qualification status dominate',
+    updateModel: 'Application-specific',
+    strongestFit: 'Advanced-node capacity where a qualified module exists',
+    boundary: 'Availability does not establish target application readiness',
+    evidenceStatus: 'Foundry evidence required'
+  },
+  {
+    id: 'secure',
+    profile: 'Secure persistent repository',
+    family: 'OTP + SRAM PUF + crypto',
+    contract: 'Ciphertext persists; root key is regenerated',
+    nodeLens: 'System architecture spans memory, logic and security controls',
+    updateModel: 'Controlled encrypted transactions',
+    strongestFit: 'Secrets protected above physically observable storage',
+    boundary: 'PUF reliability and physical attack assurance remain validation obligations',
+    evidenceStatus: 'Architecture inference'
   }
 ];

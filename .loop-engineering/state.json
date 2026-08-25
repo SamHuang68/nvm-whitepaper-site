@@ -1,0 +1,81 @@
+{
+  "schema": "loop-engineering/state/v1",
+  "loop_id": "R19-WHITEPAPER-INTEGRATION",
+  "objective": "Publish a public-safe NVM Whitepaper and Decision Studio, integrate it into the NVM Knowledge Hub, and verify reciprocal navigation and responsive rendering.",
+  "status": "release_ready",
+  "single_writer": "Codex host",
+  "reviewed_manifest_hash": "84f736d9f822ffb7f59fbee6ab00d39d7d9bbc86b0452e52fa2131c395de55a2",
+  "post_review_deployment_adapter": "The product files are unchanged. The custom workflow was replaced by a gh-pages branch source after GitHub rejected workflow creation without OAuth workflow scope.",
+  "constraints": [
+    "NVM remains the L0 knowledge spine",
+    "Whitepaper Studio is a cross-topic Knowledge Workbench, not a third application lens",
+    "No confidential, NDA, fictional-product or unsupported quantitative claims in the public build",
+    "Future SharePoint and Copilot transfer preserves the canonical eight-field content contract",
+    "No horizontal dragging at 312px or wider"
+  ],
+  "tasks": [
+    { "id": "R19-01", "name": "Public-content redesign", "status": "completed" },
+    { "id": "R19-02", "name": "Hub integration", "status": "completed" },
+    { "id": "R19-03", "name": "Rendered and accessibility QA", "status": "completed" },
+    { "id": "R19-04", "name": "Commit, push and Pages deploy", "status": "authorized_pending" }
+  ],
+  "provider_evidence": [
+    {
+      "task_id": "R19-NEMOTRON-CRAFT-01",
+      "provider": "NVIDIA",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "status": "completed",
+      "output_hash": "db2dc0a7677456cfde6ab2b72231409dcc6addb6493775b90e515b72ab46359a"
+    },
+    {
+      "task_id": "R19-GROK-CRAFT-02",
+      "provider": "xAI",
+      "model": "grok-4.6",
+      "status": "failed_policy_blocked",
+      "evidence_id": "e4d717906379c5845e8f01bdfb612686f12fd67016b1c930640faa74463a77ed"
+    },
+    {
+      "task_id": "R19-NEMOTRON-MANIFEST-17",
+      "provider": "NVIDIA",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "model_observation": "response-observed",
+      "status": "completed_pass_host_accepted",
+      "output_hash": "9f847e27652d5a8c01d050ceff0abc94d4cf202c71a86a0db7a8af1233ca3de7",
+      "evidence_id": "38ac245850d10d251f8716f86207d47dc3ab7ddf8e57b90c9c97791abec7c7fa",
+      "acceptance_evidence_id": "a08677b07754efcad04e190ed2a5350849dec37a4d0f4ef6a706dc1d7c6e3ce8"
+    },
+    {
+      "task_id": "R19-CURSOR-MANIFEST-18",
+      "provider": "Cursor",
+      "upstream_vendor": "Google",
+      "model": "gemini-3.7-flash-high",
+      "model_observation": "transport-requested-model",
+      "status": "completed_pass_acceptance_blocked_identity_unobserved",
+      "output_hash": "55991e70bc86af21266907879de9da98abf99588af325287dfb7dc3e2580c908",
+      "evidence_id": "4d49674ffdaf631b3d6728ba3754a88afd57a8bf2abacc8ce5199457e65d7cf1"
+    },
+    {
+      "task_id": "R19-GROK-MANIFEST-19",
+      "provider": "xAI",
+      "model": "grok-4.6",
+      "status": "failed_policy_blocked_tool_attempt",
+      "evidence_id": "4d7b07eccf555491260f5996daf0b7cbe0c04d8a69c3c9de7b786f8f79dfbe3d"
+    }
+  ],
+  "verification": [
+    "Public-content scan PASS across 15 source files",
+    "Vite 8.2.2 production build PASS",
+    "npm audit PASS with zero vulnerabilities",
+    "Whitepaper render PASS: five views by nine widths, including 312px",
+    "Hub render PASS: seven pages by seven widths, including 312px",
+    "Deep-link reload, mobile menu, sticky header, evidence-label floor and topology disclaimer gates PASS"
+  ],
+  "gates": {
+    "truth": "pass",
+    "rendered_quality": "pass",
+    "accessibility": "pass",
+    "deployment": "authorized_pending_live_verification",
+    "multi_ai_review": "completed_nvidia_and_cursor_google",
+    "strict_multi_provider_ledger": "blocked_cursor_model_identity_unobserved"
+  }
+}
