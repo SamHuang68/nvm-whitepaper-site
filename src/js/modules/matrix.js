@@ -8,7 +8,7 @@ export function renderMatrix(container) {
         <p class="eyebrow dark">03 · DECISION MATRIX</p>
         <h2>Compare the state contract<br><em>before comparing a macro</em></h2>
       </div>
-      <p>Interactive 5-way security & NVM architecture comparison. Filter by technology family, inspect latency and physical exposure, or export profiles for system engineering reviews.</p>
+      <p>Interactive multi-way security & NVM architecture comparison (${nvmIpSpecs.length} canonical profiles). Filter by technology family, inspect latency and physical exposure, or export profiles for system engineering reviews.</p>
     </header>
 
     <section class="selector-controls" aria-label="Decision matrix filters">
@@ -31,7 +31,7 @@ export function renderMatrix(container) {
 
     <div class="decision-table-wrap">
       <table class="decision-table">
-        <caption>Illustrative NVM selection profiles with explicit evidence boundaries</caption>
+        <caption>Illustrative NVM selection profiles with explicit evidence boundaries (${nvmIpSpecs.length} Profiles)</caption>
         <thead>
           <tr>
             <th scope="col">State Profile</th>
@@ -105,22 +105,24 @@ function renderRows(items) {
 
 function getSecurityClass(text) {
   if (!text) return '';
-  if (text.includes('None')) return 'sec-high';
-  if (text.includes('High')) return 'sec-low';
+  if (text.includes('None') || text.includes('Monolithic') || text.includes('Die-internal')) return 'sec-high';
+  if (text.includes('High') || text.includes('External')) return 'sec-low';
   return 'sec-med';
 }
 
 function exportCSV(items) {
-  const headers = ['Profile', 'Family', 'Contract', 'BusExposure', 'Latency', 'BOMCost', 'StrongestFit', 'EvidenceStatus'];
+  const headers = ['Profile', 'Family', 'Contract', 'NodeLens', 'UpdateModel', 'BusExposure', 'Latency', 'BOMCost', 'StrongestFit', 'EvidenceStatus'];
   const rows = items.map(i => [
-    `"${i.profile}"`,
-    `"${i.family}"`,
+    `"${i.profile.replace(/"/g, '""')}"`,
+    `"${i.family.replace(/"/g, '""')}"`,
     `"${i.contract.replace(/"/g, '""')}"`,
-    `"${i.busExposure || ''}"`,
-    `"${i.latency || ''}"`,
-    `"${i.bomCost || ''}"`,
+    `"${(i.nodeLens || '').replace(/"/g, '""')}"`,
+    `"${(i.updateModel || '').replace(/"/g, '""')}"`,
+    `"${(i.busExposure || '').replace(/"/g, '""')}"`,
+    `"${(i.latency || '').replace(/"/g, '""')}"`,
+    `"${(i.bomCost || '').replace(/"/g, '""')}"`,
     `"${i.strongestFit.replace(/"/g, '""')}"`,
-    `"${i.evidenceStatus}"`
+    `"${i.evidenceStatus.replace(/"/g, '""')}"`
   ]);
   const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
   const encodedUri = encodeURI(csvContent);

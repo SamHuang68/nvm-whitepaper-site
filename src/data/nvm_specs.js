@@ -4,7 +4,7 @@ export const nvmIpSpecs = [
     profile: 'SRAM PUF Secure Storage',
     family: 'SRAM PUF + 1T OTP + AES-256',
     contract: 'Absent-at-rest; ephemeral root regenerated on-the-fly; encrypted ciphertext in OTP',
-    nodeLens: 'Logic-compatible CMOS; qualified across TSMC N7, N6, N5, N4P, N3P, N7A, N5A',
+    nodeLens: 'Logic-compatible CMOS; qualified across TSMC N7, N6, N5, N4P, N3P, N2 GAA, N7A, N5A',
     updateModel: 'Dynamic boot generation + line-speed AES-256-XTS execution + instant zeroization',
     strongestFit: 'AI Accelerators, LLM KV Cache cipher, Chiplet D2D Root-of-Trust, Automotive ADAS',
     boundary: 'Requires helper data integrity checks and hardware trust-boundary enclosure',
@@ -96,5 +96,19 @@ export const nvmIpSpecs = [
     latency: 'Very Low (10-30 ns read/write)',
     busExposure: 'Internal bus',
     bomCost: 'Medium (3-5 extra BEOL masks)'
+  },
+  {
+    id: 'cpo_chiplet_nvm',
+    profile: 'CPO & 3D Chiplet NVM Trim',
+    family: 'On-Die Managed MTP / AntiFuse OTP',
+    contract: 'Bounded mutable optical phase/heater calibration and UCIe D2D session keys',
+    nodeLens: 'CoWoS / SoIC / COUPE heterogeneous advanced packaging & TSMC 3DFabric',
+    updateModel: 'Atomic calibration commit + instant cold-boot zeroization',
+    strongestFit: '51.2T/102.4T CPO Switches, UCIe 2.0 D2D Links, Optical Compute Interconnect (OCI)',
+    boundary: 'Requires DAC precision calibration and high-temperature thermal cycling margin',
+    evidenceStatus: '800G/1.6T Silicon Proven · OCP OIF · UCIe 2.0',
+    latency: 'Sub-10 ns read, atomic write',
+    busExposure: 'None (Die-internal analog/interconnect boundary)',
+    bomCost: 'Zero extra mask adder in standard CMOS'
   }
 ];
