@@ -171,3 +171,23 @@
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Global Portfolio Link */
+.portfolio-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #ff9d5c !important;
+  font-weight: 750 !important;
+  letter-spacing: .08em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: rgba(255, 157, 92, 0.12);
+  border: 1px solid rgba(255, 157, 92, 0.3);
+  text-decoration: none;
+}
+.portfolio-back-link:hover {
+  background: rgba(255, 157, 92, 0.22);
+  color: #ffb885 !important;
+  text-decoration: none;
+}
