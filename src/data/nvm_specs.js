@@ -30,7 +30,7 @@ export const nvmIpSpecs = [
   {
     id: 'otp_puf_tunneling',
     profile: 'Quantum Tunneling OTP-PUF',
-    family: 'NeoPUF / High-Voltage Tunneling',
+    family: 'Quantum Tunneling / High-Voltage OTP-PUF',
     contract: 'Permanent trapped-charge / tunneling paths; zero helper-data activation',
     nodeLens: 'Requires specialized high-voltage write characterization per foundry/node',
     updateModel: 'Enrolled once at wafer sort; static physical response without fuzzy extractor',
