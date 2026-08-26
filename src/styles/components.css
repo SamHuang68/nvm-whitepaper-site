@@ -157,3 +157,27 @@
 .template-rule > p { margin: 0; color: #d89a5c; font: 750 9px/1.45 var(--font-mono); letter-spacing: .11em; }
 .template-rule h3 { margin: 0; color: var(--aqua); font-size: 21px; }
 .template-rule > span { color: #a5bbc0; font-size: 13px; line-height: 1.65; }
+
+/* Matrix Actions & Export Buttons */
+.matrix-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+}
+.button.small {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  min-height: 32px;
+}
+.security-chip {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+}
+.sec-high { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.sec-med { background: rgba(255, 140, 66, 0.15); color: #ff8c42; border: 1px solid rgba(255, 140, 66, 0.3); }
+.sec-low { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
