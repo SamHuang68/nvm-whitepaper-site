@@ -133,3 +133,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopyActions();
   routeFromLocation({ scrollChapter: true });
 });
+
+function initLanguageToggle() {
+  const btn = document.getElementById("languageToggle");
+  let currentLang = localStorage.getItem("nvm-language") || "en";
+
+  function applyLang(lang) {
+    currentLang = lang;
+    localStorage.setItem("nvm-language", lang);
+    document.documentElement.lang = lang === "zh" ? "zh-Hant" : "en";
+    if (btn) {
+      btn.setAttribute("aria-label", lang === "zh" ? "Switch to English" : "切換至繁體中文");
+    }
+  }
+
+  btn?.addEventListener("click", () => {
+    applyLang(currentLang === "zh" ? "en" : "zh");
+  });
+
+  applyLang(currentLang);
+}
+
+document.addEventListener('DOMContentLoaded', initLanguageToggle);

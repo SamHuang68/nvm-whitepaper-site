@@ -191,3 +191,26 @@
   color: #ffb885 !important;
   text-decoration: none;
 }
+
+/* Language Toggle in Studio */
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 36px;
+  padding: 6px 12px;
+  background: #092837;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: #38bdf8;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: all .2s ease;
+}
+.language-toggle:hover {
+  background: #0e3a4f;
+  border-color: #00f0ff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+}
