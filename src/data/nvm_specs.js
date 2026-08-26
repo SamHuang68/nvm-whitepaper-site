@@ -106,7 +106,7 @@ export const nvmIpSpecs = [
     updateModel: 'Atomic calibration commit + instant cold-boot zeroization',
     strongestFit: '51.2T/102.4T CPO Switches, UCIe 2.0 D2D Links, Optical Compute Interconnect (OCI)',
     boundary: 'Requires DAC precision calibration and high-temperature thermal cycling margin',
-    evidenceStatus: '800G/1.6T Silicon Proven · OCP OIF · UCIe 2.0',
+    evidenceStatus: '800G/1.6T Foundry-Verified · OCP OIF · UCIe 2.0',
     latency: 'Sub-10 ns read, atomic write',
     busExposure: 'None (Die-internal analog/interconnect boundary)',
     bomCost: 'Zero extra mask adder in standard CMOS'
