@@ -72,8 +72,14 @@ if (remote) {
   const remotePaths = git('ls-tree', '-r', '--name-only', 'origin/gh-pages').split(/\r?\n/u).filter(Boolean).sort();
   const expectedPaths = [...remoteManifest.artifacts.files.map((file) => file.path), 'deploy-manifest.json'].sort();
   if (JSON.stringify(remotePaths) !== JSON.stringify(expectedPaths)) failures.push(`remote: published path set differs; expected ${expectedPaths.length}, found ${remotePaths.length}`);
-  const sourcePackageLock = execFileSync('git', ['show', `${remoteMaster}:package-lock.json`], { cwd: root });
-  if (sha256(sourcePackageLock) !== remoteManifest.inputs?.packageLockSHA256) failures.push('remote: package-lock hash does not match source commit');
+  for (const [relative, manifestField] of [
+    ['package-lock.json', 'packageLockSHA256'],
+    ['governance/pov-contract.json', 'povContractSHA256'],
+    ['governance/hub-governance-reference.json', 'hubGovernanceReferenceSHA256']
+  ]) {
+    const sourceBytes = execFileSync('git', ['show', `${remoteMaster}:${relative}`], { cwd: root });
+    if (sha256(sourceBytes) !== remoteManifest.inputs?.[manifestField]) failures.push(`remote: ${relative} hash does not match source commit`);
+  }
   if (localManifest.artifacts.artifactSetSHA256 !== remoteManifest.artifacts.artifactSetSHA256) failures.push('remote: local and published artifact sets differ');
 
   if (live) {

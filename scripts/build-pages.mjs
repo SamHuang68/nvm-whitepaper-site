@@ -30,8 +30,12 @@ const walk = (directory) => fs.readdirSync(directory, { withFileTypes: true }).f
   return [target];
 });
 
-const packageLockPath = path.join(root, 'package-lock.json');
-const packageLock = JSON.parse(fs.readFileSync(packageLockPath, 'utf8'));
+const sourceCommit = git('rev-parse', 'HEAD');
+const sourceInput = (relative) => release
+  ? execFileSync('git', ['show', `${sourceCommit}:${relative}`], { cwd: root })
+  : read(path.join(root, ...relative.split('/')));
+const packageLockBytes = sourceInput('package-lock.json');
+const packageLock = JSON.parse(packageLockBytes.toString('utf8'));
 const governancePath = path.join(root, 'governance', 'hub-governance-reference.json');
 const files = walk(dist).map((target) => {
   const bytes = read(target);
@@ -42,9 +46,8 @@ const files = walk(dist).map((target) => {
   };
 }).sort((a, b) => Buffer.compare(Buffer.from(a.path), Buffer.from(b.path)));
 const artifactSetSHA256 = sha256(files.map((file) => `${file.path}\0${file.bytes}\0${file.sha256}\n`).join(''));
-const sourceCommit = git('rev-parse', 'HEAD');
 if (release && !fs.existsSync(governancePath)) throw new Error('Release build requires governance/hub-governance-reference.json.');
-const packageLockSHA256 = sha256(read(packageLockPath));
+const packageLockSHA256 = sha256(packageLockBytes);
 const sourceTree = git('show', '-s', '--format=%T', sourceCommit);
 const manifest = {
   schemaVersion: '1.0',
@@ -67,8 +70,8 @@ const manifest = {
   },
   inputs: {
     packageLockSHA256,
-    povContractSHA256: sha256(read(path.join(root, 'governance', 'pov-contract.json'))),
-    hubGovernanceReferenceSHA256: fs.existsSync(governancePath) ? sha256(read(governancePath)) : null
+    povContractSHA256: sha256(sourceInput('governance/pov-contract.json')),
+    hubGovernanceReferenceSHA256: fs.existsSync(governancePath) ? sha256(sourceInput('governance/hub-governance-reference.json')) : null
   },
   artifacts: {
     hashAlgorithm: 'sha256',
