@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "github-pages-static-site",
+  "site": "nvm-whitepaper-site",
+  "releaseMode": "release",
+  "source": {
+    "repository": "https://github.com/SamHuang68/nvm-whitepaper-site.git",
+    "branch": "master",
+    "commit": "f666c5e559b845e3f2bf7544d43f950ae04e15eb",
+    "tree": "e23d411aa6c31bf3167f56d0639b3eed0ec288ea",
+    "commitTime": "2026-08-29T23:29:26+08:00",
+    "clean": true
+  },
+  "build": {
+    "tool": "vite",
+    "version": "8.2.2",
+    "nodeVersion": "v24.14.0",
+    "base": "./"
+  },
+  "inputs": {
+    "packageLockSHA256": "f8d3b2b1ee18ebc9a2af3e5f6f53719f69b2c503bf9bad9b9035aebc12f95dbf",
+    "povContractSHA256": "8e7d2bebb6bcf1cd127f0f0f966b45811643b263c9baddf9a527b12dfd302c34",
+    "hubGovernanceReferenceSHA256": "45b7a7c19a6de83f2170faa2a91786c1b1223c4644638b643d1aec1c3d7c2850"
+  },
+  "artifacts": {
+    "hashAlgorithm": "sha256",
+    "canonicalization": "path<NUL>bytes<NUL>sha256<LF>; UTF-8 paths sorted bytewise; manifest excluded",
+    "count": 4,
+    "artifactSetSHA256": "b615970381f5bd5758e19fb93fb2756f368498fa8eafe6e9dcfa4e7e51bcf8d7",
+    "files": [
+      {
+        "path": ".nojekyll",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "assets/index-C6my26Nk.css",
+        "bytes": 38134,
+        "sha256": "ea671eef4e9234cfde91d584fb51a7a33ed4a1b45fc24e4deeef7eb31560848a"
+      },
+      {
+        "path": "assets/index-D5sBKM66.js",
+        "bytes": 54617,
+        "sha256": "f5db6aaee206856097f50b3ccca3d37a04ec765d2cc10af78348db10cd82b6e4"
+      },
+      {
+        "path": "index.html",
+        "bytes": 9742,
+        "sha256": "c413e39659e2749c5d5bfbd44ba6056e9f3fc66598d1dadc2d0f701ea5f8802e"
+      }
+    ]
+  },
+  "releaseId": "sha256:14f9c1be746b54d43a086f8d1f9d42746db2c5a50436c2fd2e0f5d6011661fff"
+}
