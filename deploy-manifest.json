@@ -6,9 +6,9 @@
   "source": {
     "repository": "https://github.com/SamHuang68/nvm-whitepaper-site.git",
     "branch": "master",
-    "commit": "f666c5e559b845e3f2bf7544d43f950ae04e15eb",
-    "tree": "e23d411aa6c31bf3167f56d0639b3eed0ec288ea",
-    "commitTime": "2026-08-29T23:29:26+08:00",
+    "commit": "322b4456b4655c8304276f0345dab5edf65ff2af",
+    "tree": "cc53c6af3a2f5af35e0e7ca7683322c1478b885d",
+    "commitTime": "2026-08-29T23:32:36+08:00",
     "clean": true
   },
   "build": {
@@ -18,9 +18,9 @@
     "base": "./"
   },
   "inputs": {
-    "packageLockSHA256": "f8d3b2b1ee18ebc9a2af3e5f6f53719f69b2c503bf9bad9b9035aebc12f95dbf",
-    "povContractSHA256": "8e7d2bebb6bcf1cd127f0f0f966b45811643b263c9baddf9a527b12dfd302c34",
-    "hubGovernanceReferenceSHA256": "45b7a7c19a6de83f2170faa2a91786c1b1223c4644638b643d1aec1c3d7c2850"
+    "packageLockSHA256": "5c03ba3312fb9f35443f347d4dd334e975993c5c103d9324c340cbc642d5a3d0",
+    "povContractSHA256": "8cf2c9006670c334db39743a26bad4c9d43beed1c76c5da02e49ae97b8b928f1",
+    "hubGovernanceReferenceSHA256": "a725edb5f213c37a91408a7234597f0a2c596a5ccf8f336e0efc83c76024869c"
   },
   "artifacts": {
     "hashAlgorithm": "sha256",
@@ -50,5 +50,5 @@
       }
     ]
   },
-  "releaseId": "sha256:14f9c1be746b54d43a086f8d1f9d42746db2c5a50436c2fd2e0f5d6011661fff"
+  "releaseId": "sha256:bb028f1daf72c48623294acd891b29b0a1b3501263ae50a003acdf9a59fa39eb"
 }
