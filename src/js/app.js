@@ -15,6 +15,7 @@ function requestedView() {
 
 function setView(view, { updateHistory = true, focus = false } = {}) {
   const next = views.includes(view) ? view : 'overview';
+  document.body.dataset.activeView = next;
   document.querySelectorAll('.view-tab').forEach((tab) => {
     const active = tab.dataset.view === next;
     tab.setAttribute('aria-selected', active ? 'true' : 'false');
@@ -49,6 +50,8 @@ function routeFromLocation({ scrollChapter = false } = {}) {
   setView(next, { updateHistory: false });
   if (chapterRoute && next === 'whitepaper' && scrollChapter) {
     requestAnimationFrame(() => document.querySelector(window.location.hash)?.scrollIntoView({ block: 'start' }));
+  } else if (next !== 'overview' && scrollChapter) {
+    requestAnimationFrame(() => document.querySelector('.view-dock')?.scrollIntoView({ block: 'start' }));
   }
 }
 
@@ -133,25 +136,3 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopyActions();
   routeFromLocation({ scrollChapter: true });
 });
-
-function initLanguageToggle() {
-  const btn = document.getElementById("languageToggle");
-  let currentLang = localStorage.getItem("nvm-language") || "en";
-
-  function applyLang(lang) {
-    currentLang = lang;
-    localStorage.setItem("nvm-language", lang);
-    document.documentElement.lang = lang === "zh" ? "zh-Hant" : "en";
-    if (btn) {
-      btn.setAttribute("aria-label", lang === "zh" ? "Switch to English" : "切換至繁體中文");
-    }
-  }
-
-  btn?.addEventListener("click", () => {
-    applyLang(currentLang === "zh" ? "en" : "zh");
-  });
-
-  applyLang(currentLang);
-}
-
-document.addEventListener('DOMContentLoaded', initLanguageToggle);

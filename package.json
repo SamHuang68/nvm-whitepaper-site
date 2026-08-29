@@ -5,9 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build-pages.mjs --preview",
+    "build:pages": "node scripts/build-pages.mjs --release",
     "preview": "vite preview --port 4175",
-    "check": "node scripts/check-public.mjs",
+    "check": "node --check scripts/build-pages.mjs && node --check scripts/check-deploy-lineage.mjs && node --check scripts/check-pov.mjs && node --check scripts/check-matrix-evidence.mjs && node --check scripts/check-knowledge-contract.mjs && node scripts/check-public.mjs && node scripts/check-pov.mjs && node scripts/check-matrix-evidence.mjs && node scripts/check-knowledge-contract.mjs",
+    "check:deploy": "node scripts/check-deploy-lineage.mjs --remote",
+    "check:deploy:live": "node scripts/check-deploy-lineage.mjs --live",
+    "check:dist": "node scripts/check-deploy-lineage.mjs --expect-release",
+    "release:pages": "node scripts/release-pages.mjs",
     "qa:render": "node scripts/render-qa.mjs"
   },
   "devDependencies": {

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "aggregateContractId": "POV-NVM-WEB-2026-08-29",
+  "scopeId": "POV-NVM-HUB-NEUTRAL-2026-08-29",
+  "scope": "NVM Whitepaper & Decision Studio",
+  "authorOrganization": "Independent author",
+  "sponsorOrganization": "NVM Knowledge Hub",
+  "authorPersonKey": "sam-huang",
+  "authorDisplayName": "Sam Huang",
+  "editorialPublisherKey": "nvm-hub",
+  "editorialPublisherDisplayName": "NVM Knowledge Hub",
+  "artifactMode": "neutral-editorial",
+  "audience": "Public technical and enterprise knowledge audiences",
+  "institutionalStance": "Evidence-governed neutral technical synthesis",
+  "allowedSpeakerConstructions": [
+    "The source establishes…",
+    "The public record discloses…",
+    "A candidate architecture may…",
+    "The target implementation must validate…"
+  ],
+  "actorTaxonomyLabels": ["Author", "Editorial publisher", "Vendor", "Foundry", "Standards body", "Contributor", "Independent evaluator"],
+  "externalActorLabels": ["Vendor", "Foundry", "Standards body", "Contributor", "Independent evaluator"],
+  "evidenceTaxonomyLabels": ["Direct observation", "Public requirement", "Vendor disclosure", "Published implementation example", "Bounded inference", "Open validation"],
+  "responsibilityOwners": {
+    "contentAccountability": "sam-huang",
+    "editorialPublishing": "nvm-hub",
+    "targetQualification": "future-corporate-product-owner"
+  },
+  "closingActionOwner": "The decision owner for the target implementation",
+  "speakerRule": "Describe evidence, limitations and architecture implications in neutral editorial voice. First-party vendor voice is permitted only inside an explicitly scoped first-party artifact or quotation.",
+  "publicBoundary": "No company-confidential identifiers, customer context, target-silicon results or unresolved corporate Person fields are published."
+}

@@ -17,7 +17,7 @@ export function renderPhase3Templates(container) {
             <p class="template-audience">${template.targetAudience}</p>
             <p class="template-summary">${template.summary}</p>
             <ol>${template.sections.map((section, sectionIndex) => `<li><span>${String(sectionIndex + 1).padStart(2, '0')}</span><div><b>${section.heading}</b><p>${section.body}</p></div></li>`).join('')}</ol>
-            <button class="copy-button" type="button" data-copy-outline="${escapeAttribute(outline)}">Copy template outline <span aria-hidden="true">↗</span></button>
+            <button class="copy-button" type="button" data-copy-outline="${escapeAttribute(outline)}">Copy template outline <span aria-hidden="true">＋</span></button>
           </article>
         `;
       }).join('')}

@@ -60,7 +60,7 @@ export function renderPhase1KB(container) {
       <ol class="selection-sequence">
         ${selectionSequence.map((item) => `<li><span>${item.step}</span><div><b>${item.name}</b><p>${item.detail}</p></div></li>`).join('')}
       </ol>
-      <a class="inline-cta" href="?view=selector">Apply the sequence in the Decision Matrix <span aria-hidden="true">↗</span></a>
+      <a class="inline-cta" href="?view=selector">Apply the sequence in the Decision Matrix <span aria-hidden="true">→</span></a>
     </section>
   `;
 }

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "referenceId": "NVM-HUB-R24-36ad202315fb",
+  "aggregateContractId": "POV-NVM-WEB-2026-08-29",
+  "source": {
+    "repository": "https://github.com/SamHuang68/secure-storage-knowledge-hub",
+    "branch": "main",
+    "publicBase": "https://samhuang68.github.io/secure-storage-knowledge-hub/",
+    "canonicalCommit": "36ad202315fb0685fac4da77a77239c5ef9ea13d",
+    "canonicalTree": "e99f7e0851d4121eec47a00bf925244a0fa72916"
+  },
+  "bindings": {
+    "institutionalPOVContract": {
+      "path": "data/institutional-pov-contract.json",
+      "sha256": "42e940a043ca45fa50c9d5cd02c4db5e9fd7602058b9056c8c52ee039dfbfd03"
+    },
+    "publicReleasePolicy": {
+      "path": "data/public-release-policy.json",
+      "sha256": "1985a47efc7878146c0bde0b4949b9677b43eaad83b664201869ff14cf456c48"
+    },
+    "releaseLineage": {
+      "path": "data/release-lineage.json",
+      "sha256": "09f0e2dc057144bd3422342e60facb0e03cb6a976e73c2612ef81be86d126a18",
+      "status": "RELEASED",
+      "boundContentCommit": "fc5880f60655d7d8361885d77964d76e6a4c14c4",
+      "boundContentTree": "64bef854fc43cea9becb81d672b170f36d9b29d0"
+    }
+  },
+  "rule": "Whitepaper Studio inherits the aggregate public POV contract but retains its own neutral editorial actor and evidence taxonomy. Any source commitment change requires a new reference and a new release build."
+}

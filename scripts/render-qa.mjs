@@ -4,7 +4,7 @@ import { chromium } from 'playwright';
 
 const output = path.resolve(import.meta.dirname, '..', '.loop-engineering', 'rendered-r19');
 fs.mkdirSync(output, { recursive: true });
-const widths = [1440, 1361, 1280, 1101, 901, 768, 621, 390, 312];
+const widths = [1440, 1361, 1360, 1280, 1101, 1100, 901, 900, 768, 621, 620, 390, 312];
 const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates'];
 const failures = [];
 const browser = await chromium.launch({ headless: true });
@@ -45,6 +45,75 @@ for (const width of widths) {
         .filter((element) => element.getClientRects().length)
         .map((element) => ({ label: element.textContent.trim().slice(0, 28), size: parseFloat(getComputedStyle(element).fontSize) }))
         .filter((item) => item.size < 9);
+      const headingSelectors = ['.studio-hero h1', '.panel-heading h2', '.paper-heading h2', '.paper-chapter h3', '.section-label h3', '.selector-gate h3', '.template-card h3'];
+      const headingIssues = [...document.querySelectorAll(headingSelectors.join(','))]
+        .filter((element) => element.getClientRects().length)
+        .map((element) => ({ selector: `${element.tagName.toLowerCase()}.${element.className || ''}`, text: element.textContent.trim().slice(0, 46), size: parseFloat(getComputedStyle(element).fontSize) }))
+        .filter((item) => item.size > (innerWidth <= 620 ? (item.selector.startsWith('h1.') ? 44.1 : item.selector.startsWith('h2.') ? 38.1 : 30.1) : (item.selector.startsWith('h1.') ? 72.1 : item.selector.startsWith('h2.') ? 64.1 : 56.1)));
+      const proseSelectors = [
+        '.view-dock-copy span', '.panel-heading > p', '.contract-card > strong', '.contract-card dd', '.evidence-note',
+        '.technology-list article > div:not(.technology-name) p', '.node-lens-grid article > strong', '.calibration-boundary span',
+        '.selection-sequence p', '.chapter-copy p', '.chapter-takeaways li', '.evidence-contract dd', '.decision-table tbody th',
+        '.paper-heading dd', '.reader-index nav span', '.decision-table tbody th small', '.decision-table tbody td', '.selector-gate li span', '.schema-flow p', '.operational-fields span', '.record-grid dd',
+        '.record-grid article > p', '.template-card li p', '.template-rule > span'
+      ];
+      const proseIssues = [...document.querySelectorAll(proseSelectors.join(','))]
+        .filter((element) => element.getClientRects().length)
+        .map((element) => ({ text: element.textContent.trim().slice(0, 46), size: parseFloat(getComputedStyle(element).fontSize) }))
+        .filter((item) => item.size < 14.9);
+      const punctuationIssues = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')]
+        .filter((element) => element.getClientRects().length && /[.!?]$/.test(element.textContent.trim()))
+        .map((element) => element.textContent.trim().slice(0, 70));
+      const rgb = (value) => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+      const luminance = (value) => {
+        const channels = rgb(value).map((channel) => {
+          const normalized = channel / 255;
+          return normalized <= .03928 ? normalized / 12.92 : ((normalized + .055) / 1.055) ** 2.4;
+        });
+        return .2126 * channels[0] + .7152 * channels[1] + .0722 * channels[2];
+      };
+      const contrastRatio = (foreground, background) => {
+        const a = luminance(foreground);
+        const b = luminance(background);
+        return (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+      };
+      const tableContrastIssues = [...document.querySelectorAll('.decision-table tbody th, .decision-table tbody td')]
+        .filter((element) => element.getClientRects().length)
+        .map((element) => {
+          const style = getComputedStyle(element);
+          const rowStyle = getComputedStyle(element.closest('tr'));
+          const tableStyle = getComputedStyle(element.closest('.decision-table-wrap'));
+          const background = style.backgroundColor !== 'rgba(0, 0, 0, 0)' ? style.backgroundColor : rowStyle.backgroundColor !== 'rgba(0, 0, 0, 0)' ? rowStyle.backgroundColor : tableStyle.backgroundColor;
+          return { text: element.textContent.trim().slice(0, 36), ratio: contrastRatio(style.color, background) };
+        }).filter((item) => item.ratio < 4.5);
+      const effectiveBackground = (element) => {
+        let node = element;
+        while (node) {
+          const color = getComputedStyle(node).backgroundColor;
+          const channels = color.match(/[\d.]+/g)?.map(Number) ?? [];
+          if (channels.length >= 3 && (channels.length < 4 || channels[3] > .98)) return color;
+          node = node.parentElement;
+        }
+        return 'rgb(255, 255, 255)';
+      };
+      const contrastSelectors = [
+        '.eyebrow.dark', '.section-label p', '.section-label > span', '.paper-chapter header > p', '.node-lens-grid article > p',
+        '.selector-gate li b', '.operational-fields b', '.template-audience', '.view-tab:not([aria-selected="true"]) b',
+        '.contract-index span', '.technology-number', '.technology-name span', '.selection-sequence li > span', '.selection-sequence p',
+        '.reader-index > p', '.reader-index nav b', '.reader-boundary span', '.decision-table tbody th small',
+        '.schema-flow li > span', '.schema-flow p', '.operational-fields small', '.record-grid header b',
+        '.template-card > header span', '.template-card > header p', '.template-card li > span', '.template-card li p', '.matrix-evidence time'
+      ];
+      const generalContrastIssues = [...document.querySelectorAll(contrastSelectors.join(','))]
+        .filter((element) => element.getClientRects().length)
+        .map((element) => {
+          const style = getComputedStyle(element);
+          const size = parseFloat(style.fontSize);
+          const weight = Number(style.fontWeight) || 400;
+          const threshold = size >= 24 || (size >= 18.66 && weight >= 700) ? 3 : 4.5;
+          const ratio = contrastRatio(style.color, effectiveBackground(element));
+          return { text: element.textContent.trim().slice(0, 36), ratio, threshold };
+        }).filter((item) => item.ratio < item.threshold);
       return {
         overflow: Math.max(doc.scrollWidth - doc.clientWidth, body.scrollWidth - body.clientWidth),
         horizontalScrollers,
@@ -57,6 +126,13 @@ for (const width of widths) {
         brand: document.querySelector('.studio-brand')?.href,
         heroSize: parseFloat(getComputedStyle(document.querySelector('.studio-hero h1')).fontSize),
         labelIssues,
+        headingIssues,
+        proseIssues,
+        punctuationIssues,
+        tableContrastIssues,
+        generalContrastIssues,
+        routeContextVisible: expected === 'overview' || [...document.querySelectorAll(`#panel-${expected} .panel-heading, #panel-${expected} .paper-heading, .view-tab[aria-selected="true"]`)]
+          .some((element) => { const box = element.getBoundingClientRect(); return box.bottom > 0 && box.top < innerHeight; }),
         expected
       };
     }, view);
@@ -67,11 +143,17 @@ for (const width of widths) {
     if (audit.h1Count !== 1 || audit.lang !== 'en') failures.push(`${view}@${width}: document semantics H1=${audit.h1Count} lang=${audit.lang}`);
     if (audit.brand !== 'https://samhuang68.github.io/secure-storage-knowledge-hub/') failures.push(`${view}@${width}: brand target ${audit.brand}`);
     if (audit.labelIssues.length) failures.push(`${view}@${width}: evidence label floor ${JSON.stringify(audit.labelIssues)}`);
+    if (audit.headingIssues.length) failures.push(`${view}@${width}: heading scale ${JSON.stringify(audit.headingIssues)}`);
+    if (audit.proseIssues.length) failures.push(`${view}@${width}: mobile prose floor ${JSON.stringify(audit.proseIssues)}`);
+    if (audit.punctuationIssues.length) failures.push(`${view}@${width}: display heading punctuation ${JSON.stringify(audit.punctuationIssues)}`);
+    if (audit.tableContrastIssues.length) failures.push(`${view}@${width}: decision-table contrast ${JSON.stringify(audit.tableContrastIssues)}`);
+    if (audit.generalContrastIssues.length) failures.push(`${view}@${width}: light-surface contrast ${JSON.stringify(audit.generalContrastIssues)}`);
+    if (!audit.routeContextVisible) failures.push(`${view}@${width}: active workbench context is not visible in the first viewport`);
     if (width <= 390 && audit.heroSize > 44.1) failures.push(`${view}@${width}: mobile hero ${audit.heroSize}px exceeds 44px`);
     if (errors.length) failures.push(`${view}@${width}: ${errors.join(' | ')}`);
 
     if (width <= 621) {
-      const smallTargets = await page.evaluate(() => [...document.querySelectorAll('button:not([hidden]), a.button')].filter((element) => element.getClientRects().length).map((element) => ({ label: element.textContent.trim().slice(0, 30), w: element.getBoundingClientRect().width, h: element.getBoundingClientRect().height })).filter((box) => box.w < 44 || box.h < 44));
+      const smallTargets = await page.evaluate(() => [...document.querySelectorAll('a[href], button:not([hidden]), select')].filter((element) => element.getClientRects().length).map((element) => ({ label: element.textContent.trim().slice(0, 30), w: element.getBoundingClientRect().width, h: element.getBoundingClientRect().height })).filter((box) => box.w < 44 || box.h < 44));
       if (smallTargets.length) failures.push(`${view}@${width}: small targets ${JSON.stringify(smallTargets)}`);
       const menu = page.locator('#menuToggle');
       await menu.click();
@@ -90,8 +172,9 @@ for (const width of widths) {
       if (keyboard.selected !== 'whitepaper' || keyboard.focused !== 'whitepaper' || keyboard.query !== 'whitepaper') failures.push(`overview@${width}: keyboard tab contract ${JSON.stringify(keyboard)}`);
     }
 
-    if ((width === 1440 && view === 'overview') || (width === 390 && ['overview', 'whitepaper', 'selector'].includes(view)) || (width === 312 && view === 'overview')) {
-      await page.locator(`#tab-${view}`).click();
+    if ((width === 1440 && ['overview', 'whitepaper', 'selector'].includes(view)) || (width === 390 && ['overview', 'whitepaper', 'selector'].includes(view)) || (width === 312 && view === 'overview')) {
+      const captureTab = page.locator(`#tab-${view}`);
+      if (await captureTab.getAttribute('aria-selected') !== 'true') await captureTab.click();
       await page.screenshot({ path: path.join(output, `${view}-${width}-viewport.png`), fullPage: false });
       await page.locator(`#panel-${view}`).scrollIntoViewIfNeeded();
       await page.screenshot({ path: path.join(output, `${view}-${width}-panel.png`), fullPage: false });

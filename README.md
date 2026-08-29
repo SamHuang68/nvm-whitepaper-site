@@ -35,4 +35,21 @@ npm run build
 npm run preview
 ```
 
-The reviewed source lives on `master`. The compiled `dist` output is published from the root of the `gh-pages` branch, with a `.nojekyll` marker, at <https://samhuang68.github.io/nvm-whitepaper-site/>. This branch-based source keeps deployment compatible with GitHub credentials that do not carry workflow-edit scope.
+`npm run build` produces a preview build. A releasable build must come from a clean `master` commit:
+
+```powershell
+npm run check
+npm run build:pages
+npm run release:pages
+```
+
+The release build writes `dist/.nojekyll` and `dist/deploy-manifest.json`. The manifest binds the artifact set to the exact source commit, source tree, package-lock hash, POV contract and Knowledge Hub governance reference. It is generated after the source commit and is not source-controlled metadata.
+
+The reviewed source lives on `master`. The compiled `dist` output is published from the root of `gh-pages` at <https://samhuang68.github.io/nvm-whitepaper-site/>. After publication, verify that local `dist`, `origin/master`, `origin/gh-pages` and anonymous GitHub Pages all resolve to the same source and artifact hashes:
+
+```powershell
+npm run check:deploy
+npm run check:deploy:live
+```
+
+The branch-based publishing path remains compatible with GitHub credentials that do not carry workflow-edit scope, while the manifest prevents an old or hand-edited `gh-pages` branch from being mistaken for the current source.

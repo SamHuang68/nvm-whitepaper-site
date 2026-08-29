@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: process.env.GITHUB_ACTIONS ? '/nvm-whitepaper-site/' : './',
+  base: './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

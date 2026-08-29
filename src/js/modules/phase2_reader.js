@@ -2,14 +2,14 @@ import { phase2Whitepaper } from '../../data/phase2_paper.js';
 
 export function renderPhase2Reader(container) {
   if (!container) return;
-  const { title, subtitle, author, version, publishDate, chapters } = phase2Whitepaper;
+  const { title, subtitle, author, editorialPublisher, povContractId, povScopeId, version, publishDate, chapters } = phase2Whitepaper;
 
   container.innerHTML = `
     <header class="paper-heading">
       <p class="eyebrow dark">02 · TECHNICAL WHITEPAPER</p>
       <h2>${title}</h2>
       <p>${subtitle}</p>
-      <dl><div><dt>EDITORIAL OWNER</dt><dd>${author}</dd></div><div><dt>STATUS</dt><dd>${version}</dd></div><div><dt>REVIEW DATE</dt><dd>${publishDate}</dd></div></dl>
+      <dl data-pov-contract-id="${povContractId}" data-pov-scope-id="${povScopeId}"><div><dt>AUTHOR</dt><dd>${author}</dd></div><div><dt>EDITORIAL PUBLISHER</dt><dd>${editorialPublisher}</dd></div><div><dt>POV MODE</dt><dd title="${povScopeId}">Neutral editorial</dd></div><div><dt>STATUS</dt><dd>${version}</dd></div><div><dt>REVIEW DATE</dt><dd>${publishDate}</dd></div></dl>
     </header>
     <div class="reader-layout">
       <aside class="reader-index">
@@ -25,7 +25,8 @@ export function renderPhase2Reader(container) {
             <header><p>CHAPTER ${chapter.number}</p><h3>${chapter.title}</h3><strong>${chapter.lede}</strong></header>
             <div class="chapter-copy">${chapter.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div>
             <div class="chapter-takeaways"><p>ARCHITECTURE TAKEAWAYS</p><ul>${chapter.takeaways.map((item) => `<li>${item}</li>`).join('')}</ul></div>
-            <dl class="evidence-contract"><div><dt>EVIDENCE CLASS</dt><dd>${chapter.evidenceClass}</dd></div><div><dt>LIMITATION</dt><dd>${chapter.limitation}</dd></div></dl>
+            <div class="chapter-sources"><p>SOURCE BINDINGS</p>${chapter.sources.map((source) => `<a href="${source.url}" target="_blank" rel="noreferrer"${source.sourceRole ? ` data-source-role="${source.sourceRole}"` : ''}><b>${source.id}</b><span>${source.label}</span><small>${source.actor} · ${source.evidenceClass}</small></a>`).join('')}</div>
+            <dl class="evidence-contract"><div><dt>EVIDENCE CLASS</dt><dd>${chapter.evidenceClass}</dd></div><div><dt>LIMITATION</dt><dd>${chapter.limitation}</dd></div><div><dt>OPEN VALIDATION</dt><dd>${chapter.openValidation}</dd></div></dl>
           </article>
         `).join('')}
         <aside class="paper-sources">
