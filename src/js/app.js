@@ -3,9 +3,45 @@ import { renderPhase2Reader } from './modules/phase2_reader.js';
 import { renderPhase3Templates } from './modules/phase3_template_view.js';
 import { renderPhase4Metadata } from './modules/phase4_meta_view.js';
 import { renderMatrix } from './modules/matrix.js';
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGE_QUERY_KEY,
+  LANGUAGE_STORAGE_KEY,
+  languageQueryValue,
+  normalizeLanguage,
+  t
+} from '../data/i18n.js';
 
 const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates'];
 const legacyViewMap = { phase1: 'overview', phase2: 'whitepaper', matrix: 'selector', phase4: 'taxonomy', phase3: 'templates' };
+const acceptedLanguageValues = ['en', 'zh', 'zh-tw', 'zh-hant', 'traditional-chinese'];
+let currentLanguage = DEFAULT_LANGUAGE;
+
+function safeStorageRead() {
+  try {
+    return window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageWrite(language) {
+  try {
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language === 'zh' ? 'zh' : 'en');
+  } catch {
+    // URL state remains authoritative when browser storage is unavailable.
+  }
+}
+
+function languageFromLocation() {
+  const raw = new URL(window.location.href).searchParams.get(LANGUAGE_QUERY_KEY);
+  if (!raw || !acceptedLanguageValues.includes(raw.toLowerCase())) return null;
+  return normalizeLanguage(raw);
+}
+
+function resolveInitialLanguage() {
+  return languageFromLocation() ?? (safeStorageRead() ? normalizeLanguage(safeStorageRead()) : DEFAULT_LANGUAGE);
+}
 
 function requestedView() {
   const params = new URLSearchParams(window.location.search);
@@ -30,13 +66,103 @@ function setView(view, { updateHistory = true, focus = false } = {}) {
     const url = new URL(window.location.href);
     if (next === 'overview') url.searchParams.delete('view');
     else url.searchParams.set('view', next);
+    url.searchParams.set(LANGUAGE_QUERY_KEY, languageQueryValue(currentLanguage));
     if (next !== 'whitepaper' && url.hash.startsWith('#chap-')) url.hash = '';
-    window.history.pushState({ view: next }, '', `${url.pathname}${url.search}${url.hash}`);
+    window.history.pushState({ view: next, language: currentLanguage }, '', `${url.pathname}${url.search}${url.hash}`);
   }
 }
 
-function routeFromLocation({ scrollChapter = false } = {}) {
+function renderPanels({ preserveMatrixFamily = true } = {}) {
+  const previousFamily = preserveMatrixFamily ? document.querySelector('#filter-family')?.value : null;
+  renderPhase1KB(document.querySelector('#panel-overview'), currentLanguage);
+  renderPhase2Reader(document.querySelector('#panel-whitepaper'), currentLanguage);
+  renderMatrix(document.querySelector('#panel-selector'), currentLanguage);
+  renderPhase4Metadata(document.querySelector('#panel-taxonomy'), currentLanguage);
+  renderPhase3Templates(document.querySelector('#panel-templates'), currentLanguage);
+
+  if (previousFamily) {
+    const nextFilter = document.querySelector('#filter-family');
+    if ([...nextFilter.options].some((option) => option.value === previousFamily)) {
+      nextFilter.value = previousFamily;
+      nextFilter.dispatchEvent(new Event('change'));
+    }
+  }
+}
+
+function applyStaticTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach((element) => {
+    element.textContent = t(element.dataset.i18n, currentLanguage);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach((element) => {
+    element.innerHTML = t(element.dataset.i18nHtml, currentLanguage);
+  });
+  document.querySelectorAll('[data-i18n-aria]').forEach((element) => {
+    element.setAttribute('aria-label', t(element.dataset.i18nAria, currentLanguage));
+  });
+
+  document.documentElement.lang = currentLanguage === 'zh' ? 'zh-Hant' : 'en';
+  document.body.dataset.language = currentLanguage;
+  document.title = t('meta.title', currentLanguage);
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = t('meta.description', currentLanguage);
+
+  document.querySelectorAll('[data-language-option]').forEach((button) => {
+    const active = button.dataset.languageOption === currentLanguage;
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+  const switcher = document.querySelector('.language-switcher');
+  if (switcher) switcher.setAttribute('aria-label', t('language.group', currentLanguage));
+  syncMenuLabel();
+}
+
+function syncLocalizedLinks() {
+  document.querySelectorAll('[data-view-link]').forEach((link) => {
+    const url = new URL(window.location.href);
+    const view = link.dataset.viewLink;
+    if (view === 'overview') url.searchParams.delete('view');
+    else url.searchParams.set('view', view);
+    url.searchParams.set(LANGUAGE_QUERY_KEY, languageQueryValue(currentLanguage));
+    url.hash = link.dataset.viewHash ? `#${link.dataset.viewHash}` : '';
+    link.href = `${url.pathname}${url.search}${url.hash}`;
+  });
+}
+
+function commitLanguage(language, {
+  historyMode = 'none',
+  persist = true,
+  rerender = true,
+  preserveMatrixFamily = true
+} = {}) {
+  const next = normalizeLanguage(language);
+  const changed = next !== currentLanguage;
+  currentLanguage = next;
+
+  if (rerender && changed) renderPanels({ preserveMatrixFamily });
+  applyStaticTranslations();
+  syncLocalizedLinks();
+  if (persist) safeStorageWrite(currentLanguage);
+
+  if (historyMode !== 'none') {
+    const url = new URL(window.location.href);
+    url.searchParams.set(LANGUAGE_QUERY_KEY, languageQueryValue(currentLanguage));
+    const method = historyMode === 'push' ? 'pushState' : 'replaceState';
+    window.history[method](
+      { view: requestedView(), language: currentLanguage },
+      '',
+      `${url.pathname}${url.search}${url.hash}`
+    );
+  }
+}
+
+function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {}) {
   const url = new URL(window.location.href);
+  if (syncLanguage) {
+    const routeLanguage = languageFromLocation();
+    if (routeLanguage && routeLanguage !== currentLanguage) {
+      commitLanguage(routeLanguage, { historyMode: 'none', persist: true, rerender: true });
+    }
+  }
+
   const chapterRoute = url.hash.startsWith('#chap-');
   const hasExplicitView = url.searchParams.has('view');
   let next = requestedView();
@@ -44,7 +170,7 @@ function routeFromLocation({ scrollChapter = false } = {}) {
   if (chapterRoute && !hasExplicitView) next = 'whitepaper';
   if (chapterRoute && next !== 'whitepaper') {
     url.hash = '';
-    window.history.replaceState({ view: next }, '', `${url.pathname}${url.search}`);
+    window.history.replaceState({ view: next, language: currentLanguage }, '', `${url.pathname}${url.search}`);
   }
 
   setView(next, { updateHistory: false });
@@ -70,7 +196,14 @@ function initTabs() {
       setView(tabs[target].dataset.view, { focus: true });
     });
   });
-  window.addEventListener('popstate', () => routeFromLocation({ scrollChapter: true }));
+  window.addEventListener('popstate', () => routeFromLocation({ scrollChapter: true, syncLanguage: true }));
+}
+
+function syncMenuLabel() {
+  const button = document.querySelector('#menuToggle');
+  const nav = document.querySelector('#globalNav');
+  if (!button) return;
+  button.setAttribute('aria-label', t(nav?.classList.contains('open') ? 'menu.close' : 'menu.open', currentLanguage));
 }
 
 function initMobileNavigation() {
@@ -79,14 +212,14 @@ function initMobileNavigation() {
   const close = (restoreFocus = false) => {
     nav?.classList.remove('open');
     button?.setAttribute('aria-expanded', 'false');
-    button?.setAttribute('aria-label', 'Open navigation');
+    syncMenuLabel();
     if (restoreFocus) button?.focus();
   };
 
   button?.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     button.setAttribute('aria-expanded', open ? 'true' : 'false');
-    button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    syncMenuLabel();
     if (open) nav.querySelector('a')?.focus();
   });
   nav?.addEventListener('click', (event) => { if (event.target.closest('a')) close(); });
@@ -110,7 +243,7 @@ function initCopyActions() {
     const text = button.dataset.copyOutline || '';
     try {
       await navigator.clipboard.writeText(text);
-      showToast('Template outline copied');
+      showToast(t('templates.copied', currentLanguage));
     } catch {
       const fallback = document.createElement('textarea');
       fallback.value = text;
@@ -120,19 +253,47 @@ function initCopyActions() {
       fallback.select();
       document.execCommand('copy');
       fallback.remove();
-      showToast('Template outline copied');
+      showToast(t('templates.copied', currentLanguage));
     }
   });
 }
 
+function initLanguageSwitcher() {
+  document.querySelectorAll('[data-language-option]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const next = normalizeLanguage(button.dataset.languageOption);
+      if (next === currentLanguage) return;
+      commitLanguage(next, { historyMode: 'push', persist: true, rerender: true });
+      button.focus();
+    });
+  });
+
+  window.addEventListener('storage', (event) => {
+    if (event.key !== LANGUAGE_STORAGE_KEY || !event.newValue) return;
+    const next = normalizeLanguage(event.newValue);
+    if (next === currentLanguage) return;
+    commitLanguage(next, { historyMode: 'replace', persist: false, rerender: true });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  renderPhase1KB(document.querySelector('#panel-overview'));
-  renderPhase2Reader(document.querySelector('#panel-whitepaper'));
-  renderMatrix(document.querySelector('#panel-selector'));
-  renderPhase4Metadata(document.querySelector('#panel-taxonomy'));
-  renderPhase3Templates(document.querySelector('#panel-templates'));
+  currentLanguage = resolveInitialLanguage();
+  renderPanels({ preserveMatrixFamily: false });
+  applyStaticTranslations();
+  syncLocalizedLinks();
+  safeStorageWrite(currentLanguage);
+
+  const initialUrl = new URL(window.location.href);
+  initialUrl.searchParams.set(LANGUAGE_QUERY_KEY, languageQueryValue(currentLanguage));
+  window.history.replaceState(
+    { view: requestedView(), language: currentLanguage },
+    '',
+    `${initialUrl.pathname}${initialUrl.search}${initialUrl.hash}`
+  );
+
   initTabs();
   initMobileNavigation();
   initCopyActions();
+  initLanguageSwitcher();
   routeFromLocation({ scrollChapter: true });
 });

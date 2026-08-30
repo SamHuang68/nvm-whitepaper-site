@@ -1,53 +1,59 @@
 import { matrixPackageMetadata, nvmIpSpecs } from '../../data/nvm_specs.js';
+import { localize, t } from '../../data/i18n.js';
 
-export function renderMatrix(container) {
+export function renderMatrix(container, language = 'en') {
   if (!container) return;
+  const U = (key, variables = {}) => t(key, language, variables);
+  const L = (value) => localize(value, language);
   container.innerHTML = `
     <header class="panel-heading selector-heading">
-      <div><p class="eyebrow dark">03 · DECISION MATRIX</p><h2>Compare the state contract<br><em>before comparing a macro</em></h2></div>
-      <p>Compare ${nvmIpSpecs.length} bounded architecture profiles. Every row exposes its evidence class, public source, scope, limitation and the next target-specific validation action.</p>
+      <div><p class="eyebrow dark">${U('matrix.eyebrow')}</p><h2>${U('matrix.title')}</h2></div>
+      <p>${U('matrix.intro', { count: nvmIpSpecs.length })}</p>
     </header>
-    <section class="selector-controls" aria-label="Decision matrix filters">
-      <label for="filter-family"><span>FILTER BY TECHNOLOGY FAMILY</span><select id="filter-family"><option value="ALL">All governed profiles (${nvmIpSpecs.length})</option>${[...new Set(nvmIpSpecs.map((item) => item.family))].map((family) => `<option value="${family}">${family}</option>`).join('')}</select></label>
+    <section class="selector-controls" aria-label="${U('matrix.filters')}">
+      <label for="filter-family"><span>${U('matrix.filterFamily')}</span><select id="filter-family"><option value="ALL">${U('matrix.allProfiles', { count: nvmIpSpecs.length })}</option>${[...new Set(nvmIpSpecs.map((item) => item.family))].map((family) => `<option value="${family}">${L(family)}</option>`).join('')}</select></label>
       <div class="matrix-actions">
-        <button id="btn-export-csv" class="button secondary small" type="button" title="Export current governed profiles as CSV"><span aria-hidden="true">↓</span> Export CSV</button>
-        <button id="btn-export-json" class="button secondary small" type="button" title="Export current governed profiles as JSON"><span aria-hidden="true">↓</span> Export JSON</button>
+        <button id="btn-export-csv" class="button secondary small" type="button" title="${U('matrix.exportCsvTitle')}"><span aria-hidden="true">↓</span> ${U('matrix.exportCsv')}</button>
+        <button id="btn-export-json" class="button secondary small" type="button" title="${U('matrix.exportJsonTitle')}"><span aria-hidden="true">↓</span> ${U('matrix.exportJson')}</button>
+        <small class="matrix-export-note">${U('matrix.exportNote')}</small>
       </div>
     </section>
     <div class="decision-table-wrap">
       <table class="decision-table">
-        <caption>Bounded NVM selection profiles with evidence class, sources, limitations and open validation</caption>
-        <thead><tr><th scope="col">State Profile</th><th scope="col">Technology Family</th><th scope="col">State Contract &amp; Node Lens</th><th scope="col">Boundary</th><th scope="col">Candidate Fit</th><th scope="col">Evidence &amp; Next Gate</th></tr></thead>
-        <tbody id="decision-body">${renderRows(nvmIpSpecs)}</tbody>
+        <caption>${U('matrix.caption')}</caption>
+        <thead><tr><th scope="col">${U('matrix.stateProfile')}</th><th scope="col">${U('matrix.technologyFamily')}</th><th scope="col">${U('matrix.contractNode')}</th><th scope="col">${U('matrix.boundary')}</th><th scope="col">${U('matrix.candidateFit')}</th><th scope="col">${U('matrix.evidenceGate')}</th></tr></thead>
+        <tbody id="decision-body">${renderRows(nvmIpSpecs, language)}</tbody>
       </table>
     </div>
     <aside class="selector-gate">
-      <div><p>SELECTION GATE</p><h3>A categorical fit is not a qualification result</h3></div>
-      <ol><li><b>01</b><span>Confirm device stack, voltage options, state owner and power-off behavior</span></li><li><b>02</b><span>Bind retention, update budget and recovery to the target mission profile</span></li><li><b>03</b><span>Close PVT, test, fault and physical evidence on the intended integration</span></li></ol>
+      <div><p>${U('matrix.gate')}</p><h3>${U('matrix.gateTitle')}</h3></div>
+      <ol><li><b>01</b><span>${U('matrix.gate1')}</span></li><li><b>02</b><span>${U('matrix.gate2')}</span></li><li><b>03</b><span>${U('matrix.gate3')}</span></li></ol>
     </aside>
   `;
 
   const filterSelect = container.querySelector('#filter-family');
   const tbody = container.querySelector('#decision-body');
   const currentItems = () => filterSelect?.value === 'ALL' ? nvmIpSpecs : nvmIpSpecs.filter((item) => item.family === filterSelect?.value);
-  filterSelect?.addEventListener('change', () => { tbody.innerHTML = renderRows(currentItems()); });
+  filterSelect?.addEventListener('change', () => { tbody.innerHTML = renderRows(currentItems(), language); });
   container.querySelector('#btn-export-csv')?.addEventListener('click', async () => exportCSV(currentItems()));
   container.querySelector('#btn-export-json')?.addEventListener('click', async () => exportJSON(currentItems()));
 }
 
-function renderRows(items) {
+function renderRows(items, language = 'en') {
+  const U = (key, variables = {}) => t(key, language, variables);
+  const L = (value) => localize(value, language);
   return items.map((item) => `
     <tr data-record-id="${item.id}">
-      <th scope="row" data-label="STATE PROFILE"><strong>${item.profile}</strong><small>${item.updateModel}</small></th>
-      <td data-label="TECHNOLOGY FAMILY"><span class="family-chip">${item.family}</span></td>
-      <td data-label="STATE CONTRACT"><strong>${item.contract}</strong><small class="matrix-secondary"><b>NODE LENS</b>${item.nodeLens}</small></td>
-      <td data-label="BOUNDARY">${item.boundary}</td>
-      <td data-label="CANDIDATE FIT">${item.strongestFit}</td>
-      <td data-label="EVIDENCE & NEXT GATE"><div class="matrix-evidence">
-        <span class="status-chip">${item.sourceActor} · ${item.evidenceClass}</span>
+      <th scope="row" data-label="${U('matrix.stateProfile')}"><strong>${L(item.profile)}</strong><small>${L(item.updateModel)}</small></th>
+      <td data-label="${U('matrix.technologyFamily')}"><span class="family-chip">${L(item.family)}</span></td>
+      <td data-label="${U('matrix.contractNode')}"><strong>${L(item.contract)}</strong><small class="matrix-secondary"><b>${U('matrix.nodeLens')}</b>${L(item.nodeLens)}</small></td>
+      <td data-label="${U('matrix.boundary')}">${L(item.boundary)}</td>
+      <td data-label="${U('matrix.candidateFit')}">${L(item.strongestFit)}</td>
+      <td data-label="${U('matrix.evidenceGate')}"><div class="matrix-evidence">
+        <span class="status-chip">${L(item.sourceActor)} · ${L(item.evidenceClass)}</span>
         <a href="${item.sourceUrl}" target="_blank" rel="noreferrer">${item.sourceId} <span aria-hidden="true">↗</span></a>
-        <small><b>SCOPE</b>${item.scope}</small><small><b>LIMITATION</b>${item.limitation}</small><small class="matrix-open"><b>OPEN VALIDATION</b>${item.openValidation}</small>
-        <time datetime="${item.reviewedDate}">Reviewed ${item.reviewedDate}</time>
+        <small><b>${U('matrix.scope')}</b>${L(item.scope)}</small><small><b>${U('matrix.limitation')}</b>${L(item.limitation)}</small><small class="matrix-open"><b>${U('matrix.openValidation')}</b>${L(item.openValidation)}</small>
+        <time datetime="${item.reviewedDate}">${U('matrix.reviewed', { date: item.reviewedDate })}</time>
       </div></td>
     </tr>
   `).join('');

@@ -7,8 +7,6 @@ const banned = [
   ['confidential watermark', /INTERNAL\s+CONFIDENTIAL/i],
   ['restricted example', /Customer\s+Restricted\s+NDA/i],
   ['unsupported readiness language', /silicon[- ]proven/i],
-  ['fake language control', /languageToggle/],
-  ['false Chinese language metadata', /zh-Hant/],
   ['unsupported deployment maturity', /deployment[- ]proven/i],
   ['unsupported foundry maturity', /foundry[- ]verified/i],
   ['legacy fictional product', /Neo(?:OTP|MTP|PUF)/i],

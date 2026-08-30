@@ -20,7 +20,9 @@ if (!paper.includes(`author: '${pov.authorDisplayName}'`)) failures.push('whitep
 if (!paper.includes(`editorialPublisher: '${pov.editorialPublisherDisplayName}'`)) failures.push('editorial publisher is not declared separately');
 if (!paper.includes(`povContractId: '${pov.aggregateContractId}'`)) failures.push('whitepaper data lacks aggregate POV contract');
 if (!paper.includes(`povScopeId: '${pov.scopeId}'`)) failures.push('whitepaper data lacks scoped POV ID');
-if (!reader.includes('<dt>AUTHOR</dt>') || !reader.includes('<dt>EDITORIAL PUBLISHER</dt>') || reader.includes('EDITORIAL OWNER')) failures.push('reader conflates author and editorial publisher');
+const hasAuthorBinding = reader.includes('<dt>AUTHOR</dt>') || reader.includes("U('whitepaper.author')");
+const hasPublisherBinding = reader.includes('<dt>EDITORIAL PUBLISHER</dt>') || reader.includes("U('whitepaper.publisher')");
+if (!hasAuthorBinding || !hasPublisherBinding || reader.includes('EDITORIAL OWNER')) failures.push('reader conflates author and editorial publisher');
 for (const forbidden of ['ContentOwnerUPN', 'Content Owner UPN', 'EDITORIAL OWNER']) if (`${metadata}\n${reader}`.includes(forbidden)) failures.push(`public artifact contains forbidden unresolved identity field: ${forbidden}`);
 
 if (failures.length) {
