@@ -6,9 +6,9 @@
   "source": {
     "repository": "https://github.com/SamHuang68/nvm-whitepaper-site.git",
     "branch": "master",
-    "commit": "322b4456b4655c8304276f0345dab5edf65ff2af",
-    "tree": "cc53c6af3a2f5af35e0e7ca7683322c1478b885d",
-    "commitTime": "2026-08-29T23:32:36+08:00",
+    "commit": "7d89e42f76a02a482d5265b1df3394d42125b7aa",
+    "tree": "7091548b61786ec824d516679fededcfe2a34a67",
+    "commitTime": "2026-08-30T22:04:52+08:00",
     "clean": true
   },
   "build": {
@@ -26,7 +26,7 @@
     "hashAlgorithm": "sha256",
     "canonicalization": "path<NUL>bytes<NUL>sha256<LF>; UTF-8 paths sorted bytewise; manifest excluded",
     "count": 4,
-    "artifactSetSHA256": "b615970381f5bd5758e19fb93fb2756f368498fa8eafe6e9dcfa4e7e51bcf8d7",
+    "artifactSetSHA256": "eb47f682bf410d4efb68e94d139f36aa2943e3f23aea89649c1f8b589520449a",
     "files": [
       {
         "path": ".nojekyll",
@@ -34,21 +34,21 @@
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       {
-        "path": "assets/index-C6my26Nk.css",
-        "bytes": 38134,
-        "sha256": "ea671eef4e9234cfde91d584fb51a7a33ed4a1b45fc24e4deeef7eb31560848a"
+        "path": "assets/index-Bw_GU4P1.js",
+        "bytes": 114481,
+        "sha256": "99583a88098a5b72743262dafcb1d43c49fef60f08db0d089f35c506aab9de4f"
       },
       {
-        "path": "assets/index-D5sBKM66.js",
-        "bytes": 54617,
-        "sha256": "f5db6aaee206856097f50b3ccca3d37a04ec765d2cc10af78348db10cd82b6e4"
+        "path": "assets/index-DLAOVrvd.css",
+        "bytes": 40609,
+        "sha256": "e1188b50edcaeca673454af3380e587b7aac4ff573f147301fdb987edd9af04b"
       },
       {
         "path": "index.html",
-        "bytes": 9742,
-        "sha256": "c413e39659e2749c5d5bfbd44ba6056e9f3fc66598d1dadc2d0f701ea5f8802e"
+        "bytes": 12098,
+        "sha256": "e647647a0fdeef5e0f8bc8a34f2c41ca6690534576d21e283e542bc3c663d1d0"
       }
     ]
   },
-  "releaseId": "sha256:bb028f1daf72c48623294acd891b29b0a1b3501263ae50a003acdf9a59fa39eb"
+  "releaseId": "sha256:e6fc3eff8f7d7cb71dbcd10c4446ca384862e4de5ec0f9faea56fe6b8b190ca4"
 }
