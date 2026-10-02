@@ -1,6 +1,6 @@
 # NVM Whitepaper & Decision Studio
 
-A public, evidence-governed workbench within the [NVM Knowledge Hub](https://samhuang68.github.io/secure-storage-knowledge-hub/). It turns NVM state requirements into readable whitepapers, technology comparisons and SharePoint-ready content records.
+A public, evidence-governed workbench within the [NVM Knowledge Hub](https://hub.samhuang68.org/). It turns NVM state requirements into readable whitepapers, technology comparisons and SharePoint-ready content records.
 
 ## Knowledge architecture
 
@@ -41,9 +41,12 @@ For full browser validation, first run `npm run build` and keep `npm run preview
 npm run qa:i18n
 npm run qa:render
 npm run qa:roadmap
+npm run qa:experience
 ```
 
 These checks cover both languages, all eight views, responsive layouts, keyboard navigation, source disclosure and roadmap filtering. QA output is local and ignored by Git.
+
+The experience regression also checks browser history, shareable matrix filters and exports, malformed chapter links, deferred panel creation, and clipboard success or manual recovery. Set `NVM_QA_BROWSER=msedge` and `NVM_QA_HEADED=1` to run that check in an installed, visible Microsoft Edge window. `NVM_QA_BASE` can target the published site for the same acceptance checks.
 
 ## Build and deployment
 

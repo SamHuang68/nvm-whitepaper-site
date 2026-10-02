@@ -33,8 +33,17 @@ export function renderMatrix(container, language = 'en') {
 
   const filterSelect = container.querySelector('#filter-family');
   const tbody = container.querySelector('#decision-body');
+  const familyFromUrl = new URL(window.location.href).searchParams.get('family');
+  if ([...filterSelect.options].some(option => option.value === familyFromUrl)) filterSelect.value = familyFromUrl;
   const currentItems = () => filterSelect?.value === 'ALL' ? nvmIpSpecs : nvmIpSpecs.filter((item) => item.family === filterSelect?.value);
-  filterSelect?.addEventListener('change', () => { tbody.innerHTML = renderRows(currentItems(), language); });
+  tbody.innerHTML = renderRows(currentItems(), language);
+  filterSelect?.addEventListener('change', () => {
+    tbody.innerHTML = renderRows(currentItems(), language);
+    const url = new URL(window.location.href);
+    if (filterSelect.value === 'ALL') url.searchParams.delete('family');
+    else url.searchParams.set('family', filterSelect.value);
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  });
   container.querySelector('#btn-export-csv')?.addEventListener('click', async () => exportCSV(currentItems()));
   container.querySelector('#btn-export-json')?.addEventListener('click', async () => exportJSON(currentItems()));
 }

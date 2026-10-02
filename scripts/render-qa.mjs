@@ -153,7 +153,7 @@ for (const width of widths) {
     if (audit.horizontalScrollers.length) failures.push(`${view}@${width}: horizontal scroller ${audit.horizontalScrollers.join(', ')}`);
     if (audit.selected !== view || audit.visiblePanel !== `panel-${view}` || audit.visibleCount !== 1) failures.push(`${view}@${width}: route/panel ${JSON.stringify(audit)}`);
     if (audit.h1Count !== 1 || audit.lang !== 'en') failures.push(`${view}@${width}: document semantics H1=${audit.h1Count} lang=${audit.lang}`);
-    if (audit.brand !== 'https://samhuang68.github.io/secure-storage-knowledge-hub/') failures.push(`${view}@${width}: brand target ${audit.brand}`);
+    if (audit.brand !== 'https://hub.samhuang68.org/') failures.push(`${view}@${width}: brand target ${audit.brand}`);
     if (audit.labelIssues.length) failures.push(`${view}@${width}: evidence label floor ${JSON.stringify(audit.labelIssues)}`);
     if (audit.headingIssues.length) failures.push(`${view}@${width}: heading scale ${JSON.stringify(audit.headingIssues)}`);
     if (audit.proseIssues.length) failures.push(`${view}@${width}: mobile prose floor ${JSON.stringify(audit.proseIssues)}`);

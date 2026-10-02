@@ -203,6 +203,8 @@ export const uiStrings = {
   'templates.intro': { en: 'Each template begins with the decision or claim and ends with its evidence boundary. Copy an outline, then adapt it to the target audience.', zh: '每個範本都從決策或主張開始，以證據邊界收尾；先複製大綱，再依目標觀眾調整。' },
   'templates.copy': { en: 'Copy template outline', zh: '複製範本大綱' },
   'templates.copied': { en: 'Template outline copied', zh: '已複製範本大綱' },
+  'templates.copyUnavailable': { en: 'Automatic copying is unavailable. Select the outline below and copy it manually.', zh: '無法自動複製，請選取下方大綱並手動複製。' },
+  'templates.manualLabel': { en: 'Template outline for manual copying', zh: '可手動複製的範本大綱' },
   'templates.rule': { en: 'TEMPLATE RULE', zh: '範本原則' },
   'templates.ruleTitle': { en: 'Do not start with a product name', zh: '不要從產品名稱開始' },
   'templates.ruleBody': { en: 'Start with the system state, evidence status and decision owner. Product mapping comes after the contract is understood.', zh: '先從系統狀態、證據狀態與決策權責開始；理解契約之後，再進行產品對應。' },

@@ -19,6 +19,24 @@ const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates', 'a
 const legacyViewMap = { phase1: 'overview', phase2: 'whitepaper', matrix: 'selector', phase4: 'taxonomy', phase3: 'templates' };
 const acceptedLanguageValues = ['en', 'zh', 'zh-tw', 'zh-hant', 'traditional-chinese'];
 let currentLanguage = DEFAULT_LANGUAGE;
+const panelRenderers = {
+  overview: renderPhase1KB,
+  whitepaper: renderPhase2Reader,
+  selector: renderMatrix,
+  taxonomy: renderPhase4Metadata,
+  templates: renderPhase3Templates,
+  applications: renderApplicationAtlas,
+  security: renderFidoSecurity,
+  roadmap: renderFoundryRoadmap
+};
+const renderedLanguages = new Map();
+
+function renderPanel(view, { force = false } = {}) {
+  if (!force && renderedLanguages.get(view) === currentLanguage) return;
+  panelRenderers[view](document.getElementById(`panel-${view}`), currentLanguage);
+  renderedLanguages.set(view, currentLanguage);
+  syncLocalizedLinks();
+}
 
 function safeStorageRead() {
   try {
@@ -52,8 +70,9 @@ function requestedView() {
   return views.includes(raw) ? raw : (legacyViewMap[raw] || 'overview');
 }
 
-function setView(view, { updateHistory = true, focus = false } = {}) {
+function setView(view, { updateHistory = true, focus = false, refresh = false } = {}) {
   const next = views.includes(view) ? view : 'overview';
+  renderPanel(next, { force: refresh });
   document.body.dataset.activeView = next;
   document.querySelectorAll('.view-tab').forEach((tab) => {
     const active = tab.dataset.view === next;
@@ -72,26 +91,6 @@ function setView(view, { updateHistory = true, focus = false } = {}) {
     url.searchParams.set(LANGUAGE_QUERY_KEY, languageQueryValue(currentLanguage));
     if (next !== 'whitepaper' && url.hash.startsWith('#chap-')) url.hash = '';
     window.history.pushState({ view: next, language: currentLanguage }, '', `${url.pathname}${url.search}${url.hash}`);
-  }
-}
-
-function renderPanels({ preserveMatrixFamily = true } = {}) {
-  const previousFamily = preserveMatrixFamily ? document.querySelector('#filter-family')?.value : null;
-  renderPhase1KB(document.querySelector('#panel-overview'), currentLanguage);
-  renderPhase2Reader(document.querySelector('#panel-whitepaper'), currentLanguage);
-  renderMatrix(document.querySelector('#panel-selector'), currentLanguage);
-  renderPhase4Metadata(document.querySelector('#panel-taxonomy'), currentLanguage);
-  renderPhase3Templates(document.querySelector('#panel-templates'), currentLanguage);
-  renderApplicationAtlas(document.querySelector('#panel-applications'), currentLanguage);
-  renderFidoSecurity(document.querySelector('#panel-security'), currentLanguage);
-  renderFoundryRoadmap(document.querySelector('#panel-roadmap'), currentLanguage);
-
-  if (previousFamily) {
-    const nextFilter = document.querySelector('#filter-family');
-    if ([...nextFilter.options].some((option) => option.value === previousFamily)) {
-      nextFilter.value = previousFamily;
-      nextFilter.dispatchEvent(new Event('change'));
-    }
   }
 }
 
@@ -136,14 +135,13 @@ function syncLocalizedLinks() {
 function commitLanguage(language, {
   historyMode = 'none',
   persist = true,
-  rerender = true,
-  preserveMatrixFamily = true
+  rerender = true
 } = {}) {
   const next = normalizeLanguage(language);
   const changed = next !== currentLanguage;
   currentLanguage = next;
 
-  if (rerender && changed) renderPanels({ preserveMatrixFamily });
+  if (rerender && changed) renderPanel(document.body.dataset.activeView || requestedView(), { force: true });
   applyStaticTranslations();
   syncLocalizedLinks();
   if (persist) safeStorageWrite(currentLanguage);
@@ -161,12 +159,11 @@ function commitLanguage(language, {
 }
 
 function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {}) {
-  renderFoundryRoadmap(document.querySelector('#panel-roadmap'), currentLanguage);
   const url = new URL(window.location.href);
   if (syncLanguage) {
     const routeLanguage = languageFromLocation();
     if (routeLanguage && routeLanguage !== currentLanguage) {
-      commitLanguage(routeLanguage, { historyMode: 'none', persist: true, rerender: true });
+      commitLanguage(routeLanguage, { historyMode: 'none', persist: true, rerender: false });
     }
   }
 
@@ -180,9 +177,11 @@ function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {})
     window.history.replaceState({ view: next, language: currentLanguage }, '', `${url.pathname}${url.search}`);
   }
 
-  setView(next, { updateHistory: false });
+  setView(next, { updateHistory: false, refresh: true });
   if (chapterRoute && next === 'whitepaper' && scrollChapter) {
-    requestAnimationFrame(() => document.querySelector(window.location.hash)?.scrollIntoView({ block: 'start' }));
+    let chapterId = url.hash.slice(1);
+    try { chapterId = decodeURIComponent(chapterId); } catch { /* An invalid fragment falls back to the view navigation. */ }
+    requestAnimationFrame(() => (document.getElementById(chapterId) || document.querySelector('.view-dock'))?.scrollIntoView({ block: 'start' }));
   } else if (next !== 'overview' && scrollChapter) {
     requestAnimationFrame(() => document.querySelector('.view-dock')?.scrollIntoView({ block: 'start' }));
   }
@@ -248,19 +247,38 @@ function initCopyActions() {
     const button = event.target.closest('[data-copy-outline]');
     if (!button) return;
     const text = button.dataset.copyOutline || '';
+    let copied = false;
     try {
       await navigator.clipboard.writeText(text);
-      showToast(t('templates.copied', currentLanguage));
+      copied = true;
     } catch {
+      if (!button.isConnected) return;
       const fallback = document.createElement('textarea');
       fallback.value = text;
       fallback.setAttribute('readonly', '');
       fallback.className = 'clipboard-fallback';
       document.body.appendChild(fallback);
-      fallback.select();
-      document.execCommand('copy');
-      fallback.remove();
+      try {
+        fallback.select();
+        copied = document.execCommand('copy');
+      } catch {
+        copied = false;
+      } finally {
+        fallback.remove();
+      }
+    }
+    if (!button.isConnected) return;
+    const recovery = button.closest('.template-card').querySelector('[data-copy-fallback]');
+    recovery.hidden = copied;
+    if (copied) {
+      button.focus({ preventScroll: true });
       showToast(t('templates.copied', currentLanguage));
+    } else {
+      const outline = recovery.querySelector('textarea');
+      outline.value = text;
+      outline.focus();
+      outline.select();
+      showToast(t('templates.copyUnavailable', currentLanguage));
     }
   });
 }
@@ -285,7 +303,6 @@ function initLanguageSwitcher() {
 
 document.addEventListener('DOMContentLoaded', () => {
   currentLanguage = resolveInitialLanguage();
-  renderPanels({ preserveMatrixFamily: false });
   applyStaticTranslations();
   syncLocalizedLinks();
   safeStorageWrite(currentLanguage);
