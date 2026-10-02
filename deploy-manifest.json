@@ -6,9 +6,9 @@
   "source": {
     "repository": "https://github.com/SamHuang68/nvm-whitepaper-site.git",
     "branch": "master",
-    "commit": "776c9f888f2ccb951b668ed7065067abd67026d4",
-    "tree": "4b93e3d6373fbe9844e4a3ed6bd6d3d1e2ab881f",
-    "commitTime": "2026-10-02T18:09:49+08:00",
+    "commit": "382ecaec4e5f66331bb8b50dc178ce0d73b48dcc",
+    "tree": "5010852c241c450dbba793a622ae77861ae20067",
+    "commitTime": "2026-10-03T06:49:46+08:00",
     "clean": true
   },
   "build": {
@@ -26,7 +26,7 @@
     "hashAlgorithm": "sha256",
     "canonicalization": "path<NUL>bytes<NUL>sha256<LF>; UTF-8 paths sorted bytewise; manifest excluded",
     "count": 9,
-    "artifactSetSHA256": "1fcd234331acbb35fc4e67a957e0425ac19c0381841438d06e836752cfeec75d",
+    "artifactSetSHA256": "fae6614f94fcbf0abfdd8d993354f97a346346a7f9ab6d029cbb5774238e3d63",
     "files": [
       {
         "path": ".nojekyll",
@@ -34,14 +34,14 @@
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       {
-        "path": "assets/index-DxMGrLmF.js",
-        "bytes": 323051,
-        "sha256": "ce5afd6347936d976586d970623beb6c00949c495fe654c6a8bc3f165417bba4"
+        "path": "assets/index-DUcemXbk.css",
+        "bytes": 84329,
+        "sha256": "76617695be772c8d05ac4f1399633603bf7c4dbc042ad8e646ddb9bd68cffdf5"
       },
       {
-        "path": "assets/index-_hrx2Vhd.css",
-        "bytes": 83913,
-        "sha256": "2530666a1bb03018996074ae877d293595f77ac0e2774337da4bfcc639319fff"
+        "path": "assets/index-TDdGOgPu.js",
+        "bytes": 323795,
+        "sha256": "0a207fe6ef4e6b9147db045da8d839e6289d77918bd483196ad62905f0084412"
       },
       {
         "path": "fido2-hardware-trust-map-zh.html",
@@ -55,8 +55,8 @@
       },
       {
         "path": "index.html",
-        "bytes": 13119,
-        "sha256": "4dc822725b16db329070e57a0c0818c857a5e509d181cd3fc280861a1d75f623"
+        "bytes": 12831,
+        "sha256": "1a24bad6dfc8079164569fa47fc631c7abdbdb9f86d801669f4b356078f7e6f8"
       },
       {
         "path": "nvm-state-path.html",
@@ -75,5 +75,5 @@
       }
     ]
   },
-  "releaseId": "sha256:03a020228754dd7266fad186d2f70ca378c0094c14bea4995d5074b005a19da6"
+  "releaseId": "sha256:69ea79b6782eaa3bd22a6d105e490b0f70278b4064796792cd2c15f08b3a7d35"
 }
