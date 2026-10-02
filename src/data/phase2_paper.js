@@ -21,7 +21,7 @@ export const phase2Whitepaper = {
       evidenceClass: 'Bounded inference',
       limitation: 'Implementation targets still require product- and process-specific validation.',
       openValidation: 'Name the state owner, update authority, recovery rule and evidence required for the target system.',
-      sources: [{ id: 'AI-NVM-INF-001', label: 'NVM persistent-state contract model', url: 'https://samhuang68.github.io/secure-storage-knowledge-hub/ai-nvm-opportunities.html#abstraction', evidenceClass: 'Bounded inference', actor: 'Editorial publisher' }]
+      sources: [{ id: 'AI-NVM-INF-001', label: 'NVM persistent-state contract model', url: 'https://hub.samhuang68.org/ai-nvm-opportunities.html#abstraction', evidenceClass: 'Bounded inference', actor: 'Editorial publisher' }]
     },
     {
       id: 'technology-boundaries',
@@ -59,7 +59,7 @@ export const phase2Whitepaper = {
         { id: 'AI-NVM-ADV-003', label: 'Measured 28 nm eFlash implementation example', url: 'https://doi.org/10.1109/IMW48823.2020.9108118', evidenceClass: 'Published implementation example', actor: 'Independent evaluator' },
         { id: 'AI-NVM-ADV-004', label: 'Public foundry eNVM portfolio', url: 'https://www.tsmc.com/english/dedicatedFoundry/technology/specialty/eflash', evidenceClass: 'Vendor disclosure', actor: 'Foundry' },
         { id: 'AI-NVM-ADV-005', label: 'Direct core-supply read for a listed OTP macro', url: 'https://www.synopsys.com/dw/doc.php/ds/e/dwc_nvm_xhf_otp_ds.pdf', evidenceClass: 'Vendor disclosure', actor: 'Vendor' },
-        { id: 'OWNER-NOTE-PGM-IO-001', label: 'Programming supply as charge-pump input', url: 'https://samhuang68.github.io/secure-storage-knowledge-hub/ai-nvm-opportunities.html#advanced-nodes', evidenceClass: 'Bounded inference', actor: 'Author', sourceRole: 'owner-provided' }
+        { id: 'OWNER-NOTE-PGM-IO-001', label: 'Programming supply as charge-pump input', url: 'https://hub.samhuang68.org/ai-nvm-opportunities.html#advanced-nodes', evidenceClass: 'Bounded inference', actor: 'Author', sourceRole: 'owner-provided' }
       ]
     },
     {
@@ -75,7 +75,7 @@ export const phase2Whitepaper = {
       evidenceClass: 'Bounded inference',
       limitation: 'This public workbench intentionally excludes confidential qualification and customer data.',
       openValidation: 'Bind each target claim to a source, scope, limitation, reviewed revision and next validation owner.',
-      sources: [{ id: 'EVIDENCE-LEDGER', label: 'NVM Knowledge Hub evidence ledger', url: 'https://samhuang68.github.io/secure-storage-knowledge-hub/memory-evidence.html', evidenceClass: 'Bounded inference', actor: 'Editorial publisher' }]
+      sources: [{ id: 'EVIDENCE-LEDGER', label: 'NVM Knowledge Hub evidence ledger', url: 'https://hub.samhuang68.org/memory-evidence.html', evidenceClass: 'Bounded inference', actor: 'Editorial publisher' }]
     },
     {
       id: 'enterprise-transfer',
@@ -90,7 +90,7 @@ export const phase2Whitepaper = {
       evidenceClass: 'Bounded inference',
       limitation: 'Final column types, permissions and retention policies must align with the company tenant.',
       openValidation: 'Map public keys to corporate Person fields, permissions, content types, retention and review workflow after migration.',
-      sources: [{ id: 'POV-NVM-WEB-2026-08-29', label: 'Public POV and release contract', url: 'https://samhuang68.github.io/secure-storage-knowledge-hub/data/institutional-pov-contract.json', evidenceClass: 'Direct observation', actor: 'Editorial publisher' }]
+      sources: [{ id: 'POV-NVM-WEB-2026-08-29', label: 'Public POV and release contract', url: 'https://hub.samhuang68.org/data/institutional-pov-contract.json', evidenceClass: 'Direct observation', actor: 'Editorial publisher' }]
     }
   ]
 };

@@ -34,7 +34,7 @@ export function renderPhase2Reader(container, language = 'en') {
         `).join('')}
         <aside class="paper-sources">
           <div><p>${U('whitepaper.continue')}</p><h3>${U('whitepaper.hubTitle')}</h3></div>
-          <nav><a href="https://samhuang68.github.io/secure-storage-knowledge-hub/memory-evidence.html">${U('whitepaper.openLedger')} <span>↗</span></a><a href="https://samhuang68.github.io/secure-storage-knowledge-hub/memory-physics.html">${U('whitepaper.reviewPhysics')} <span>↗</span></a></nav>
+          <nav><a href="https://hub.samhuang68.org/memory-evidence.html">${U('whitepaper.openLedger')} <span>↗</span></a><a href="https://hub.samhuang68.org/memory-physics.html">${U('whitepaper.reviewPhysics')} <span>↗</span></a></nav>
         </aside>
       </div>
     </div>

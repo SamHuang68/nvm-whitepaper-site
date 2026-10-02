@@ -16,7 +16,8 @@
     "qa:render": "node scripts/render-qa.mjs",
     "qa:i18n": "node scripts/check-i18n-browser.mjs",
     "check:roadmap": "node scripts/檢查晶圓路線圖.mjs",
-    "qa:roadmap": "node scripts/驗證晶圓路線圖互動.mjs"
+    "qa:roadmap": "node scripts/驗證晶圓路線圖互動.mjs",
+    "qa:experience": "node scripts/check-experience-browser.mjs"
   },
   "devDependencies": {
     "playwright": "^1.55.0",
