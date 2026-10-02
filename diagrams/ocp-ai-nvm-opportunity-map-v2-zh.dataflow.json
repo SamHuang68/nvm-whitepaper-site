@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "OCP 導向 AI 系統中的分散式持久狀態契約",
+    "subtitle": "公開規格揭露狀態需求；真正決定 NVM 技術的是 qualification，而不是規格名稱",
+    "output": "public/ocp-ai-nvm-opportunity-map-zh.html",
+    "animation": "trace",
+    "visual_preset": "editorial",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1000,
+      620
+    ],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "emphasis": {
+          "label": "公開規格要求",
+          "visible": true
+        },
+        "security": {
+          "label": "受保護的安全狀態",
+          "visible": true
+        },
+        "default": {
+          "label": "具名實作脈絡",
+          "visible": true
+        },
+        "dashed": {
+          "label": "候選 fit — 待驗證",
+          "visible": true
+        },
+        "database": {
+          "label": "持久狀態",
+          "visible": true
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "direct-contracts",
+        "label": "直接證據",
+        "focus": [
+          "trust_specs",
+          "platform_mgmt",
+          "optical_mgmt",
+          "immutable_state",
+          "inventory_state",
+          "saved_config",
+          "otp_decision",
+          "platform_nv_decision",
+          "module_nv_decision"
+        ],
+        "note": "OAI-OAM、Caliptra、OAI-UBB 與 ELSFP/CMIS 揭露持久狀態需求，但不指定單一通用 macro。"
+      },
+      {
+        "id": "repair-boundary",
+        "label": "修復邊界",
+        "focus": [
+          "repair_system",
+          "repair_state",
+          "repair_nv_decision"
+        ],
+        "note": "永久修復確實存在；公開證據未建立單一通用 fuse 技術或 die 位置。"
+      },
+      {
+        "id": "technology-decision",
+        "label": "技術決策",
+        "focus": [
+          "otp_decision",
+          "platform_nv_decision",
+          "repair_nv_decision",
+          "module_nv_decision"
+        ],
+        "note": "寫入頻率、容量、製程、電壓、可靠度與威脅模型共同決定候選技術。"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "系統 socket"
+    },
+    {
+      "label": "必須持久保存的狀態"
+    },
+    {
+      "label": "通過 qualification 的候選 — 不等於 design win"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "trust_specs",
+      "type": "security",
+      "label": "OAI OAM + Caliptra",
+      "sublabel": "secure boot · lifecycle · revocation",
+      "tag": "公開規格要求",
+      "stage": 0,
+      "row": 0,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "platform_mgmt",
+      "type": "backend",
+      "label": "OAI UBB + BMC",
+      "sublabel": "FRU 身分 · firmware · recovery",
+      "tag": "公開 + 具名",
+      "stage": 0,
+      "row": 1,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "repair_system",
+      "type": "cloud",
+      "label": "HBM + 加速器",
+      "sublabel": "永久修復脈絡",
+      "tag": "具名脈絡",
+      "stage": 0,
+      "row": 2,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "optical_mgmt",
+      "type": "external",
+      "label": "ELSFP + CMIS",
+      "sublabel": "儲存 controls · User NV RAM",
+      "tag": "公開規格要求",
+      "stage": 0,
+      "row": 3,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "immutable_state",
+      "type": "security",
+      "label": "不可變信任狀態",
+      "sublabel": "key digest · SVN · UDS · revocation",
+      "tag": "受保護",
+      "stage": 1,
+      "row": 0,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "inventory_state",
+      "type": "database",
+      "label": "身分與復原狀態",
+      "sublabel": "FRU · policy · firmware metadata",
+      "tag": "持久狀態",
+      "stage": 1,
+      "row": 1,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "repair_state",
+      "type": "database",
+      "label": "永久修復 map",
+      "sublabel": "row · channel · redundancy",
+      "tag": "位置待確認",
+      "stage": 1,
+      "row": 2,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "saved_config",
+      "type": "database",
+      "label": "儲存設定",
+      "sublabel": "power/current · masks · factory set",
+      "tag": "實作方式未指定",
+      "stage": 1,
+      "row": 3,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "otp_decision",
+      "type": "security",
+      "label": "OTP / Fuse 候選",
+      "sublabel": "一次或單向狀態",
+      "tag": "驗證 MACRO",
+      "stage": 2,
+      "row": 0,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "platform_nv_decision",
+      "type": "database",
+      "label": "EEPROM / MTP / Flash",
+      "sublabel": "可維修的平台狀態",
+      "tag": "驗證 CADENCE",
+      "stage": 2,
+      "row": 1,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "repair_nv_decision",
+      "type": "database",
+      "label": "合格的修復 NVM",
+      "sublabel": "技術與位置仍待確認",
+      "tag": "驗證 PHYSICS",
+      "stage": 2,
+      "row": 2,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "module_nv_decision",
+      "type": "database",
+      "label": "MTP / EEPROM 候選",
+      "sublabel": "經驗證的 field updates",
+      "tag": "驗證 ENDURANCE",
+      "stage": 2,
+      "row": 3,
+      "width": 160,
+      "height": 76
+    }
+  ],
+  "flows": [
+    {
+      "id": "trust_contract",
+      "from": "trust_specs",
+      "to": "immutable_state",
+      "label": "不可變信任",
+      "classification": "直接公開要求",
+      "variant": "security",
+      "labelDy": 64
+    },
+    {
+      "id": "platform_contract",
+      "from": "platform_mgmt",
+      "to": "inventory_state",
+      "label": "FRU + 復原",
+      "classification": "直接／具名脈絡",
+      "variant": "emphasis",
+      "labelDy": 64
+    },
+    {
+      "id": "repair_contract",
+      "from": "repair_system",
+      "to": "repair_state",
+      "label": "永久修復",
+      "classification": "具名實作脈絡",
+      "variant": "default",
+      "labelDy": 64
+    },
+    {
+      "id": "optical_contract",
+      "from": "optical_mgmt",
+      "to": "saved_config",
+      "label": "save / restore",
+      "classification": "直接；技術不在規格範圍",
+      "variant": "emphasis",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_otp",
+      "from": "immutable_state",
+      "to": "otp_decision",
+      "label": "一次／單向",
+      "classification": "候選 — 驗證確切 macro",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_platform",
+      "from": "inventory_state",
+      "to": "platform_nv_decision",
+      "label": "可維修狀態",
+      "classification": "候選 — 驗證 cadence",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_repair",
+      "from": "repair_state",
+      "to": "repair_nv_decision",
+      "label": "罕見 + 受控",
+      "classification": "候選 — 驗證技術與位置",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_module",
+      "from": "saved_config",
+      "to": "module_nv_decision",
+      "label": "合格 rewrites",
+      "classification": "候選 — 驗證 endurance",
+      "variant": "dashed",
+      "labelDy": 64
+    }
+  ]
+}

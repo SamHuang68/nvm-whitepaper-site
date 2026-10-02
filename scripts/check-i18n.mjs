@@ -6,6 +6,8 @@ import { phase1KnowledgeBase } from '../src/data/phase1_kb.js';
 import { phase2Whitepaper } from '../src/data/phase2_paper.js';
 import { phase3Templates } from '../src/data/phase3_templates.js';
 import { phase4Metadata } from '../src/data/phase4_metadata.js';
+import { applicationAtlas } from '../src/data/application_atlas.js';
+import { fidoSecurity } from '../src/data/fido_security.js';
 
 const root = new URL('..', import.meta.url);
 const failures = [];
@@ -84,6 +86,34 @@ phase4Metadata.publicRecords.forEach((record) => ['Title', 'TechnologyFamily', '
 nvmIpSpecs.forEach((profile) => {
   ['profile', 'applicationDomain', 'processNode', 'family', 'contract', 'nodeLens', 'updateModel', 'strongestFit', 'boundary', 'evidenceClass', 'sourceActor', 'reviewStatus', 'scope', 'limitation', 'openValidation'].forEach((field) => requireLocalized(profile[field]));
 });
+
+applicationAtlas.rationales.forEach((item) => requireLocalized(item.label));
+applicationAtlas.cases.forEach((item) => {
+  ['title', 'subtitle', 'summary', 'proof', 'notProof', 'validationGate'].forEach((field) => requireLocalized(item[field]));
+  ['trigger', 'payload', 'reader', 'consumer'].forEach((field) => requireLocalized(item.stateFlow[field]));
+  ['writeCadence', 'candidateTechnology', 'processLens'].forEach((field) => requireLocalized(item.contract[field]));
+  item.sources.forEach((source) => ['label', 'actor'].forEach((field) => requireLocalized(source[field])));
+});
+applicationAtlas.explorers.forEach((item) => ['title', 'body', 'cta', 'boundary', 'href'].forEach((field) => requireLocalized(item[field])));
+applicationAtlas.history.forEach((item) => ['year', 'title', 'body'].forEach((field) => requireLocalized(item[field])));
+
+['pov', 'title', 'lede'].forEach((field) => requireLocalized(fidoSecurity[field]));
+fidoSecurity.verdicts.forEach((item) => ['label', 'headline', 'body'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.ceremonies.forEach((item) => {
+  ['title', 'question', 'boundary'].forEach((field) => requireLocalized(item[field]));
+  item.steps.forEach(requireLocalized);
+});
+fidoSecurity.keyClasses.forEach((item) => ['name', 'role', 'persistence', 'boundary'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.storageModels.forEach((item) => ['label', 'title', 'nvmPressure', 'body', 'candidates'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.backupEligibility.forEach((item) => ['label', 'title', 'body', 'state'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.memoryRoles.forEach((item) => ['technology', 'asset', 'value', 'limit'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.namedExamples.forEach((item) => ['product', 'pattern', 'insight'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.assuranceMatrix.forEach((item) => ['threat', 'levelScope', 'certificationClaimStatus', 'toeScope', 'outcome', 'patterns', 'caution'].forEach((field) => requireLocalized(item[field])));
+['title', 'summary', 'lesson'].forEach((field) => requireLocalized(fidoSecurity.eucleak[field]));
+fidoSecurity.eucleak.conditions.forEach(requireLocalized);
+fidoSecurity.claims.forEach((item) => ['claim', 'status', 'correction'].forEach((field) => requireLocalized(item[field])));
+fidoSecurity.decisionGates.forEach(requireLocalized);
+fidoSecurity.sources.forEach((item) => ['label', 'actor', 'locator'].forEach((field) => requireLocalized(item[field])));
 
 if (missingContent.size) {
   failures.push('Missing Traditional Chinese display values:\n' + [...missingContent].sort().map((value) => `  - ${value}`).join('\n'));

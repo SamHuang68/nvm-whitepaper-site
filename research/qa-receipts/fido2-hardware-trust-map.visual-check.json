@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "visual-check",
+  "status": "pass",
+  "visualReview": "pending",
+  "artifact": {
+    "path": "public/fido2-hardware-trust-map.html",
+    "sha256": "d7617f20e799fd9d231240ccf5179673cc0f9e45433ffab2406b220bf3ca055d",
+    "bytes": 719514
+  },
+  "containment": {
+    "status": "pass",
+    "viewports": [
+      { "width": 1440, "height": 900, "theme": "light", "ok": true, "readabilityOk": true, "overflowX": false, "overflowY": false },
+      { "width": 1600, "height": 1000, "theme": "light", "ok": true, "readabilityOk": true, "overflowX": false, "overflowY": false },
+      { "width": 1920, "height": 1080, "theme": "light", "ok": true, "readabilityOk": true, "overflowX": false, "overflowY": false },
+      { "width": 2048, "height": 1320, "theme": "light", "ok": true, "readabilityOk": true, "overflowX": false, "overflowY": false }
+    ]
+  },
+  "provenance": {
+    "source": "Archify visual-check",
+    "capturedOn": "2026-09-03",
+    "sanitization": "已移除本機檔案系統與瀏覽器執行檔路徑；完整 QA 旁檔保留於非發布目錄。"
+  }
+}

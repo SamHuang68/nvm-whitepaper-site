@@ -2,14 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 
-const output = path.resolve(import.meta.dirname, '..', '.loop-engineering', 'rendered-i18n-r1');
+const output = path.resolve(import.meta.dirname, '..', '.loop-engineering', 'rendered-i18n-r22');
 fs.mkdirSync(output, { recursive: true });
 const locales = [
   { query: 'en', app: 'en', html: 'en', marker: 'NVM Overview' },
   { query: 'zh-Hant', app: 'zh', html: 'zh-Hant', marker: 'NVM 概覽' }
 ];
 const widths = [1440, 1360, 1100, 900, 620, 390, 312];
-const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates'];
+const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates', 'applications', 'security', 'roadmap'];
 const failures = [];
 const browser = await chromium.launch({ headless: true });
 
@@ -61,6 +61,25 @@ for (const locale of locales) {
           cjkCount,
           languageTargets,
           mobileTargets,
+          explorerListOverflow: expectedView === 'applications'
+            ? (() => { const list = document.querySelector('.atlas-explorer-list'); return list ? list.scrollWidth - list.clientWidth : 999; })()
+            : 0,
+          explorers: expectedView === 'applications'
+            ? [...document.querySelectorAll('.atlas-explorer-card a')].map((link) => {
+                const box = link.getBoundingClientRect();
+                const describedBy = link.getAttribute('aria-describedby') || '';
+                return {
+                  href: link.getAttribute('href'),
+                  w: box.width,
+                  h: box.height,
+                  describedBy,
+                  boundaryCount: describedBy ? document.querySelectorAll(`#${describedBy}`).length : 0
+                };
+              })
+            : [],
+          fidoDiagramHref: expectedView === 'security' ? document.querySelector('.fido-explorer a')?.getAttribute('href') : null,
+          fidoPov: expectedView === 'security' ? document.querySelector('.fido-sources > footer span')?.textContent || '' : '',
+          fidoClaims: expectedView === 'security' ? document.querySelectorAll('.fido-claim-list article').length : 0,
           selectorLabels: firstRow ? [...firstRow.children].map((cell) => cell.dataset.label) : [],
           expectedView,
           expectedLanguage
@@ -82,13 +101,28 @@ for (const locale of locales) {
       }
       if (audit.languageTargets.some((target) => target.w < 44 || target.h < 44)) failures.push(`${locale.query}/${view}@${width}: language target below 44px`);
       if (audit.mobileTargets.length) failures.push(`${locale.query}/${view}@${width}: small targets ${JSON.stringify(audit.mobileTargets)}`);
+      if (view === 'applications') {
+        const expectedExplorers = ['./nvm-state-path.html', locale.app === 'zh' ? './ocp-ai-nvm-opportunity-map-zh.html' : './ocp-ai-nvm-opportunity-map.html'];
+        if (JSON.stringify(audit.explorers.map((item) => item.href)) !== JSON.stringify(expectedExplorers)
+          || audit.explorerListOverflow > 1
+          || audit.explorers.some((item) => item.boundaryCount !== 1 || (width <= 620 && (item.w < 44 || item.h < 48)))) {
+          failures.push(`${locale.query}/${view}@${width}: localized explorer contract ${JSON.stringify(audit.explorers)}`);
+        }
+      }
+      if (view === 'security') {
+        const expectedDiagram = locale.app === 'zh' ? './fido2-hardware-trust-map-zh.html' : './fido2-hardware-trust-map.html';
+        if (audit.fidoDiagramHref !== expectedDiagram || audit.fidoClaims !== 8 || audit.fidoPov.includes('[object Object]')) {
+          failures.push(`${locale.query}/${view}@${width}: FIDO 雙語契約 ${JSON.stringify({ diagram: audit.fidoDiagramHref, claims: audit.fidoClaims, pov: audit.fidoPov })}`);
+        }
+      }
       if (errors.length) failures.push(`${locale.query}/${view}@${width}: ${errors.join(' | ')}`);
 
-      const capture = locale.app === 'zh' && ((width === 1440 && ['overview', 'whitepaper', 'selector'].includes(view)) || (width === 390 && ['overview', 'whitepaper', 'selector'].includes(view)) || (width === 312 && view === 'overview'));
+      const capture = locale.app === 'zh' && ((width === 1440 && ['overview', 'whitepaper', 'selector', 'applications', 'security', 'roadmap'].includes(view)) || (width === 390 && ['overview', 'whitepaper', 'selector', 'applications', 'security', 'roadmap'].includes(view)) || (width === 312 && ['overview', 'applications', 'security', 'roadmap'].includes(view)));
       if (capture) {
         await page.screenshot({ path: path.join(output, `zh-${view}-${width}.png`), fullPage: false });
         await page.locator(`#panel-${view}`).scrollIntoViewIfNeeded();
         await page.screenshot({ path: path.join(output, `zh-${view}-${width}-panel.png`), fullPage: false });
+        if (view === 'applications') await page.locator('.atlas-explorer-callout').screenshot({ path: path.join(output, `zh-${view}-${width}-explorers.png`) });
       }
       await page.close();
     }
@@ -166,6 +200,61 @@ for (const locale of locales) {
   }));
   if (before !== 1 || preserved.family !== 'Reprogrammable embedded NVM' || preserved.rows !== 1 || !preserved.label.includes('可重複寫入') || !preserved.exportNote.includes('canonical')) {
     failures.push(`matrix filter/export boundary was not preserved: ${JSON.stringify(preserved)}`);
+  }
+  await page.close();
+}
+
+{
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 1 });
+  await page.goto('http://127.0.0.1:4175/?view=applications&case=APP-DDR5-PMIC-016&lang=en', { waitUntil: 'networkidle' });
+  await page.locator('[data-language-option="zh"]').click();
+  const preserved = await page.evaluate(() => ({
+    id: document.querySelector('.atlas-detail')?.dataset.caseId,
+    title: document.querySelector('.atlas-detail-header h3')?.textContent.trim(),
+    evidence: document.querySelector('.atlas-evidence-badge')?.textContent.trim(),
+    caseRoute: new URL(location.href).searchParams.get('case'),
+    locale: new URL(location.href).searchParams.get('lang'),
+    focused: document.activeElement?.dataset.languageOption,
+    historyYears: [...document.querySelectorAll('.atlas-history time')].map((item) => item.textContent.trim()),
+    sourceFreeze: document.querySelector('.atlas-source-freeze strong')?.textContent.trim(),
+    sourceBoundary: document.querySelector('.atlas-source-freeze p')?.textContent.trim()
+  }));
+  if (preserved.id !== 'APP-DDR5-PMIC-016' || preserved.caseRoute !== 'APP-DDR5-PMIC-016' || preserved.locale !== 'zh-Hant' || preserved.focused !== 'zh' || !preserved.title?.includes('DDR5 PMIC') || preserved.evidence !== 'NAMED IMPLEMENTATION'
+    || JSON.stringify(preserved.historyYears) !== JSON.stringify(['2017 年以前', '2017 年', '2018 年', '現行公開產品組合'])
+    || preserved.sourceFreeze !== 'R24-NVM-APPLICATION-ATLAS-2026-09-04'
+    || !preserved.sourceBoundary?.includes('公開來源')) {
+    failures.push(`Application Atlas locale/case persistence failed: ${JSON.stringify(preserved)}`);
+  }
+  await page.setViewportSize({ width: 312, height: 844 });
+  await page.reload({ waitUntil: 'networkidle' });
+  const mobile = await page.evaluate(() => {
+    const detail = document.querySelector('.atlas-detail');
+    const flow = document.querySelector('.atlas-state-flow ol');
+    const rail = document.querySelector('.atlas-case-rail');
+    const caseSelect = document.querySelector('[data-atlas-case-select]');
+    const explorerList = document.querySelector('.atlas-explorer-list');
+    const explorers = [...document.querySelectorAll('.atlas-explorer-card a')].map((link) => {
+      const box = link.getBoundingClientRect();
+      const describedBy = link.getAttribute('aria-describedby') || '';
+      return { href: link.getAttribute('href'), width: box.width, height: box.height, boundary: Boolean(document.getElementById(describedBy)) };
+    });
+    return {
+      overflow: Math.max(document.documentElement.scrollWidth - innerWidth, document.body.scrollWidth - innerWidth),
+      detailOverflow: detail.scrollWidth - detail.clientWidth,
+      railVisible: Boolean(rail?.getClientRects().length),
+      caseSelectVisible: Boolean(caseSelect?.getClientRects().length),
+      caseSelectHeight: caseSelect?.getBoundingClientRect().height,
+      flowColumns: getComputedStyle(flow).gridTemplateColumns.split(' ').length,
+      id: detail.dataset.caseId,
+      explorerListOverflow: explorerList ? explorerList.scrollWidth - explorerList.clientWidth : 999,
+      explorers
+    };
+  });
+  if (mobile.overflow > 1 || mobile.detailOverflow > 1 || mobile.railVisible || !mobile.caseSelectVisible || mobile.caseSelectHeight < 44 || mobile.flowColumns !== 1 || mobile.id !== 'APP-DDR5-PMIC-016'
+    || mobile.explorerListOverflow > 1
+    || JSON.stringify(mobile.explorers.map((item) => item.href)) !== JSON.stringify(['./nvm-state-path.html', './ocp-ai-nvm-opportunity-map-zh.html'])
+    || mobile.explorers.some((item) => item.width < 44 || item.height < 48 || !item.boundary)) {
+    failures.push(`Application Atlas 312px contract failed: ${JSON.stringify(mobile)}`);
   }
   await page.close();
 }

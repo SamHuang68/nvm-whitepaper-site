@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "NVM Opportunities Across an OCP AI System",
+    "subtitle": "Public state contracts first; technology selection follows qualification",
+    "locale": "en",
+    "output": "public/ocp-ai-nvm-opportunity-map.html",
+    "animation": "trace",
+    "visual_preset": "editorial",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1000,
+      620
+    ],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "emphasis": {
+          "label": "Public requirement",
+          "visible": true
+        },
+        "security": {
+          "label": "Protected security state",
+          "visible": true
+        },
+        "default": {
+          "label": "Named implementation context",
+          "visible": true
+        },
+        "dashed": {
+          "label": "Candidate fit — validate",
+          "visible": true
+        },
+        "database": {
+          "label": "Persistent state",
+          "visible": true
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "direct-contracts",
+        "label": "Direct contracts",
+        "focus": [
+          "trust_specs",
+          "platform_mgmt",
+          "optical_mgmt",
+          "immutable_state",
+          "inventory_state",
+          "saved_config",
+          "otp_decision",
+          "platform_nv_decision",
+          "module_nv_decision"
+        ],
+        "note": "OAI-OAM, Caliptra, OAI-UBB and ELSFP/CMIS expose persistent-state requirements without selecting one universal macro."
+      },
+      {
+        "id": "repair-boundary",
+        "label": "Repair boundary",
+        "focus": [
+          "repair_system",
+          "repair_state",
+          "repair_nv_decision"
+        ],
+        "note": "Permanent repair is real; public evidence does not establish one universal fuse technology or die location."
+      },
+      {
+        "id": "technology-decision",
+        "label": "Technology decision",
+        "focus": [
+          "otp_decision",
+          "platform_nv_decision",
+          "repair_nv_decision",
+          "module_nv_decision"
+        ],
+        "note": "Write cadence, density, node, voltage, reliability and threat model determine the candidate technology."
+      }
+    ]
+  },
+  "stages": [
+    {
+      "label": "System socket"
+    },
+    {
+      "label": "State that must persist"
+    },
+    {
+      "label": "Qualified candidate — not a design win"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "trust_specs",
+      "type": "security",
+      "label": "OAI OAM + Caliptra",
+      "sublabel": "secure boot · lifecycle · revocation",
+      "tag": "PUBLIC REQUIREMENT",
+      "stage": 0,
+      "row": 0,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "platform_mgmt",
+      "type": "backend",
+      "label": "OAI UBB + BMC",
+      "sublabel": "FRU identity · firmware · recovery",
+      "tag": "PUBLIC + NAMED",
+      "stage": 0,
+      "row": 1,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "repair_system",
+      "type": "cloud",
+      "label": "HBM + Accelerator",
+      "sublabel": "permanent repair context",
+      "tag": "NAMED CONTEXT",
+      "stage": 0,
+      "row": 2,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "optical_mgmt",
+      "type": "external",
+      "label": "ELSFP + CMIS",
+      "sublabel": "saved controls · User NV RAM",
+      "tag": "PUBLIC REQUIREMENT",
+      "stage": 0,
+      "row": 3,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "immutable_state",
+      "type": "security",
+      "label": "Immutable Trust State",
+      "sublabel": "key digest · SVN · UDS · revocation",
+      "tag": "PROTECTED",
+      "stage": 1,
+      "row": 0,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "inventory_state",
+      "type": "database",
+      "label": "Identity + Recovery",
+      "sublabel": "FRU · policy · firmware metadata",
+      "tag": "PERSISTENT",
+      "stage": 1,
+      "row": 1,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "repair_state",
+      "type": "database",
+      "label": "Permanent Repair Map",
+      "sublabel": "row · channel · redundancy",
+      "tag": "LOCATION OPEN",
+      "stage": 1,
+      "row": 2,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "saved_config",
+      "type": "database",
+      "label": "Saved Configuration",
+      "sublabel": "power/current · masks · factory set",
+      "tag": "IMPLEMENTATION-SPECIFIC",
+      "stage": 1,
+      "row": 3,
+      "width": 152,
+      "height": 76
+    },
+    {
+      "id": "otp_decision",
+      "type": "security",
+      "label": "OTP / Fuse Candidate",
+      "sublabel": "once or monotonic state",
+      "tag": "VALIDATE MACRO",
+      "stage": 2,
+      "row": 0,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "platform_nv_decision",
+      "type": "database",
+      "label": "EEPROM / MTP / Flash",
+      "sublabel": "serviceable platform state",
+      "tag": "VALIDATE CADENCE",
+      "stage": 2,
+      "row": 1,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "repair_nv_decision",
+      "type": "database",
+      "label": "Qualified Repair NVM",
+      "sublabel": "technology + location open",
+      "tag": "VALIDATE PHYSICS",
+      "stage": 2,
+      "row": 2,
+      "width": 160,
+      "height": 76
+    },
+    {
+      "id": "module_nv_decision",
+      "type": "database",
+      "label": "MTP / EEPROM Candidate",
+      "sublabel": "qualified field updates",
+      "tag": "VALIDATE ENDURANCE",
+      "stage": 2,
+      "row": 3,
+      "width": 160,
+      "height": 76
+    }
+  ],
+  "flows": [
+    {
+      "id": "trust_contract",
+      "from": "trust_specs",
+      "to": "immutable_state",
+      "label": "immutable trust",
+      "classification": "direct public requirement",
+      "variant": "security",
+      "labelDy": 64
+    },
+    {
+      "id": "platform_contract",
+      "from": "platform_mgmt",
+      "to": "inventory_state",
+      "label": "FRU + recovery",
+      "classification": "direct / named context",
+      "variant": "emphasis",
+      "labelDy": 64
+    },
+    {
+      "id": "repair_contract",
+      "from": "repair_system",
+      "to": "repair_state",
+      "label": "permanent repair",
+      "classification": "named implementation context",
+      "variant": "default",
+      "labelDy": 64
+    },
+    {
+      "id": "optical_contract",
+      "from": "optical_mgmt",
+      "to": "saved_config",
+      "label": "save / restore",
+      "classification": "direct; technology out of scope",
+      "variant": "emphasis",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_otp",
+      "from": "immutable_state",
+      "to": "otp_decision",
+      "label": "once / monotonic",
+      "classification": "candidate — validate exact macro",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_platform",
+      "from": "inventory_state",
+      "to": "platform_nv_decision",
+      "label": "serviceable state",
+      "classification": "candidate — validate cadence",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_repair",
+      "from": "repair_state",
+      "to": "repair_nv_decision",
+      "label": "rare + governed",
+      "classification": "candidate — validate technology and location",
+      "variant": "dashed",
+      "labelDy": 64
+    },
+    {
+      "id": "candidate_module",
+      "from": "saved_config",
+      "to": "module_nv_decision",
+      "label": "qualified rewrites",
+      "classification": "candidate — validate endurance",
+      "variant": "dashed",
+      "labelDy": 64
+    }
+  ]
+}

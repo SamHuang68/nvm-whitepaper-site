@@ -26,9 +26,8 @@
   .hero-system { width: min(860px, 100%); margin-inline: auto; }
   .view-dock { margin-top: -28px; }
   .view-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .view-tab:nth-child(3) { border-right: 0; }
+  .view-tab:nth-child(3n) { border-right: 0; }
   .view-tab:nth-child(n+4) { border-top: 1px solid var(--line-light); }
-  .view-tab:last-child { border-right: 1px solid var(--line-light); }
   .panel-heading { grid-template-columns: 1fr; }
   .panel-heading > p { max-width: 780px; }
   .selection-sequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -107,7 +106,7 @@
   .view-tab:nth-child(2n) { border-right: 0; }
   .view-tab:nth-child(3) { border-right: 1px solid var(--line-light); }
   .view-tab:nth-child(n+3) { border-top: 1px solid var(--line-light); }
-  .view-tab:last-child { grid-column: 1 / -1; border-right: 0; }
+  .view-tab:last-child { grid-column: auto; border-right: 0; }
   .view-tab span { font-size: 9px; letter-spacing: .015em; }
   .view-tab b { font-size: 12px; }
   .matrix-evidence > a, .record-grid dd a { min-height: 44px; display: flex; align-items: center; }

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "State That Survives Power Loss",
+    "locale": "en",
+    "output": "public/nvm-state-path.html",
+    "viewBox": [1000, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "repair-path",
+        "label": "Repair and calibration",
+        "focus": ["test_cal", "otp_commit", "repair_restore", "compute_memory"],
+        "note": "Follow one-time manufacturing state into the next cold boot"
+      },
+      {
+        "id": "security-path",
+        "label": "Identity and lifecycle",
+        "focus": ["security_provision", "fuse_commit", "secure_derive", "rot_crypto"],
+        "note": "Separate persistent lifecycle state from ephemeral key derivation"
+      },
+      {
+        "id": "configuration-path",
+        "label": "Configuration and logs",
+        "focus": ["lifecycle_update", "mtp_commit", "config_restore", "power_io"],
+        "note": "See bounded rewrites, integrity checks and deterministic restore"
+      }
+    ]
+  },
+  "stages": [
+    { "label": "State source" },
+    { "label": "Commit and store" },
+    { "label": "Power-on restore" },
+    { "label": "System consumer" }
+  ],
+  "nodes": [
+    { "id": "test_cal", "type": "external", "label": "Test and Calibrate", "sublabel": "defects · trim · repair", "stage": 0, "row": 0, "tag": "factory", "width": 152 },
+    { "id": "security_provision", "type": "security", "label": "Provision Identity", "sublabel": "hashes · lifecycle", "stage": 0, "row": 1, "tag": "trusted", "width": 152 },
+    { "id": "lifecycle_update", "type": "external", "label": "Update Configuration", "sublabel": "profiles · logs", "stage": 0, "row": 2, "tag": "bounded", "width": 152 },
+    { "id": "otp_commit", "type": "database", "label": "OTP Commit", "sublabel": "authorize · program · lock", "stage": 1, "row": 0, "tag": "write once", "width": 152 },
+    { "id": "fuse_commit", "type": "security", "label": "Lifecycle Fuses", "sublabel": "identity · version · revoke", "stage": 1, "row": 1, "tag": "immutable", "width": 152 },
+    { "id": "mtp_commit", "type": "database", "label": "MTP Commit", "sublabel": "verify · update · recover", "stage": 1, "row": 2, "tag": "rewritable", "width": 152 },
+    { "id": "repair_restore", "type": "backend", "label": "Repair Restore", "sublabel": "shadow registers", "stage": 2, "row": 0, "tag": "first read", "width": 152 },
+    { "id": "secure_derive", "type": "security", "label": "Secure Derivation", "sublabel": "PUF companion · key policy", "stage": 2, "row": 1, "tag": "ephemeral", "width": 152 },
+    { "id": "config_restore", "type": "backend", "label": "Config Restore", "sublabel": "load · check · apply", "stage": 2, "row": 2, "tag": "first read", "width": 152 },
+    { "id": "compute_memory", "type": "backend", "label": "Compute and Memory", "sublabel": "repair map · boot state", "stage": 3, "row": 0, "tag": "operate", "width": 152 },
+    { "id": "rot_crypto", "type": "security", "label": "Root of Trust", "sublabel": "verify · decrypt · attest", "stage": 3, "row": 1, "tag": "protect", "width": 152 },
+    { "id": "power_io", "type": "backend", "label": "Power and I/O", "sublabel": "rails · timing · descriptors", "stage": 3, "row": 2, "tag": "configure", "width": 152 }
+  ],
+  "flows": [
+    { "id": "commit_test", "from": "test_cal", "to": "otp_commit", "label": "repair and trim", "classification": "factory result", "variant": "emphasis", "labelDy": 53 },
+    { "id": "commit_security", "from": "security_provision", "to": "fuse_commit", "label": "authorized state", "classification": "restricted", "variant": "security", "labelDy": 53 },
+    { "id": "commit_update", "from": "lifecycle_update", "to": "mtp_commit", "label": "bounded update", "classification": "policy checked", "variant": "dashed", "labelDy": 53 },
+    { "id": "restore_otp", "from": "otp_commit", "to": "repair_restore", "label": "cold-boot load", "classification": "read", "variant": "emphasis", "labelDy": 53 },
+    { "id": "derive_security", "from": "fuse_commit", "to": "secure_derive", "label": "lifecycle policy", "classification": "restricted", "variant": "security", "labelDy": 53 },
+    { "id": "restore_mtp", "from": "mtp_commit", "to": "config_restore", "label": "load and verify", "classification": "read", "variant": "dashed", "labelDy": 53 },
+    { "id": "consume_repair", "from": "repair_restore", "to": "compute_memory", "label": "apply repair map", "classification": "operational", "variant": "emphasis", "labelDy": 53 },
+    { "id": "consume_security", "from": "secure_derive", "to": "rot_crypto", "label": "ephemeral key context", "classification": "secret", "variant": "security", "labelDy": 53 },
+    { "id": "consume_config", "from": "config_restore", "to": "power_io", "label": "apply configuration", "classification": "operational", "variant": "default", "labelDy": 53 }
+  ]
+}
