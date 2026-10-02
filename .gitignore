@@ -9,3 +9,5 @@ qa-output/
 *.local
 .DS_Store
 .loop-engineering/rendered-*/
+.loop-engineering/state.json
+Microsoft/Windows/PowerShell/ModuleAnalysisCache

@@ -3,6 +3,9 @@ import { renderPhase2Reader } from './modules/phase2_reader.js';
 import { renderPhase3Templates } from './modules/phase3_template_view.js';
 import { renderPhase4Metadata } from './modules/phase4_meta_view.js';
 import { renderMatrix } from './modules/matrix.js';
+import { renderApplicationAtlas } from './modules/application_atlas_view.js';
+import { renderFidoSecurity } from './modules/fido_security_view.js';
+import { renderFoundryRoadmap } from './modules/晶圓路線圖介面.js';
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_QUERY_KEY,
@@ -12,7 +15,7 @@ import {
   t
 } from '../data/i18n.js';
 
-const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates'];
+const views = ['overview', 'whitepaper', 'selector', 'taxonomy', 'templates', 'applications', 'security', 'roadmap'];
 const legacyViewMap = { phase1: 'overview', phase2: 'whitepaper', matrix: 'selector', phase4: 'taxonomy', phase3: 'templates' };
 const acceptedLanguageValues = ['en', 'zh', 'zh-tw', 'zh-hant', 'traditional-chinese'];
 let currentLanguage = DEFAULT_LANGUAGE;
@@ -79,6 +82,9 @@ function renderPanels({ preserveMatrixFamily = true } = {}) {
   renderMatrix(document.querySelector('#panel-selector'), currentLanguage);
   renderPhase4Metadata(document.querySelector('#panel-taxonomy'), currentLanguage);
   renderPhase3Templates(document.querySelector('#panel-templates'), currentLanguage);
+  renderApplicationAtlas(document.querySelector('#panel-applications'), currentLanguage);
+  renderFidoSecurity(document.querySelector('#panel-security'), currentLanguage);
+  renderFoundryRoadmap(document.querySelector('#panel-roadmap'), currentLanguage);
 
   if (previousFamily) {
     const nextFilter = document.querySelector('#filter-family');
@@ -155,6 +161,7 @@ function commitLanguage(language, {
 }
 
 function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {}) {
+  renderFoundryRoadmap(document.querySelector('#panel-roadmap'), currentLanguage);
   const url = new URL(window.location.href);
   if (syncLanguage) {
     const routeLanguage = languageFromLocation();

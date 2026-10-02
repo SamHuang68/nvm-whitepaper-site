@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "FIDO2 硬體信任 — 兩種互動儀式與兩條證據路徑",
+    "subtitle": "概念性參考架構 · WebAuthn 與 CTAP 不強制 SE、PUF 或特定記憶體技術",
+    "animation": "trace",
+    "visual_preset": "editorial",
+    "quality_profile": "showcase",
+    "viewBox": [1068, 540],
+    "views": [
+      { "id": "registrationPath", "label": "註冊", "focus": ["immutablePolicy", "attestationModel", "attestationStatement", "registration", "rpPolicy"], "note": "可選 attestation 在建立 credential 時提供 RP 政策判定所需訊號。" },
+      { "id": "authenticationPath", "label": "登入驗證", "focus": ["deviceRoot", "credentialSource", "assertionSignature", "authentication", "rpVerification"], "note": "日常登入由綁定 RP 的 credential key 簽署 assertion。" },
+      { "id": "memoryBoundary", "label": "記憶體邊界", "focus": ["immutablePolicy", "deviceRoot", "attestationModel", "credentialSource"], "note": "OTP、PUF 與可更新 NVM 是有邊界的實作選擇，不是 FIDO 強制條件。" }
+    ],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "security": { "label": "受保護狀態或操作" },
+        "emphasis": { "label": "規範定義的互動儀式" },
+        "dashed": { "label": "可選或依模型而定" },
+        "default": { "label": "互動儀式資料流" }
+      }
+    }
+  },
+  "stages": [
+    { "label": "裝置根" },
+    { "label": "受保護狀態" },
+    { "label": "安全操作" },
+    { "label": "FIDO 互動儀式" },
+    { "label": "RP 決策" }
+  ],
+  "nodes": [
+    { "id": "immutablePolicy", "type": "security", "label": "生命週期信任錨", "sublabel": "ROM／實體與邏輯 OTP", "tag": "依實作而定", "stage": 0, "row": 0, "width": 140 },
+    { "id": "deviceRoot", "type": "security", "label": "裝置根／KEK", "sublabel": "PUF 重建／NVM／key ladder", "tag": "採 PUF 時需 helper input", "stage": 0, "row": 2 },
+    { "id": "attestationModel", "type": "security", "label": "Attestation 政策／材料", "sublabel": "Basic／Self／AttCA／AnonCA／None", "tag": "依模型而定", "stage": 1, "row": 0, "width": 176 },
+    { "id": "credentialSource", "type": "security", "label": "Credential material", "sublabel": "持久保存／wrapped／重新導出", "tag": "金鑰材料模式", "stage": 1, "row": 2, "width": 176 },
+    { "id": "attestationStatement", "type": "security", "label": "Attestation statement", "sublabel": "可選的來源訊號", "tag": "註冊", "stage": 2, "row": 0, "width": 146 },
+    { "id": "assertionSignature", "type": "security", "label": "Assertion signature", "sublabel": "綁定 RP 的 credential key", "tag": "登入驗證", "stage": 2, "row": 2 },
+    { "id": "registration", "type": "backend", "label": "註冊", "sublabel": "建立 credential", "tag": "WebAuthn", "stage": 3, "row": 0 },
+    { "id": "authentication", "type": "backend", "label": "登入驗證", "sublabel": "challenge response", "tag": "WebAuthn", "stage": 3, "row": 2 },
+    { "id": "rpPolicy", "type": "external", "label": "RP 信任政策", "sublabel": "metadata + 本地政策", "tag": "判定", "stage": 4, "row": 0 },
+    { "id": "rpVerification", "type": "external", "label": "RP Assertion 驗證", "sublabel": "已保存 public key", "tag": "判定", "stage": 4, "row": 2 }
+  ],
+  "flows": [
+    { "id": "policyToAttestation", "from": "immutablePolicy", "to": "attestationModel", "label": "政策或可選 attestation material", "classification": "依實作而定", "variant": "dashed", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [208, 205] },
+    { "id": "rootToCredential", "from": "deviceRoot", "to": "credentialSource", "label": "衍生／解封／保護", "classification": "依實作而定", "variant": "security", "route": "straight", "fromSide": "right", "toSide": "left", "labelDy": 53 },
+    { "id": "attestationToStatement", "from": "attestationModel", "to": "attestationStatement", "label": "簽署或 self-attest", "classification": "依模型而定", "variant": "dashed", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [416, 205] },
+    { "id": "credentialToSignature", "from": "credentialSource", "to": "assertionSignature", "label": "授權金鑰使用", "classification": "私鑰邊界", "variant": "security", "route": "straight", "fromSide": "right", "toSide": "left" },
+    { "id": "statementToRegistration", "from": "attestationStatement", "to": "registration", "label": "attestation object", "classification": "可選", "variant": "emphasis", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [645, 205] },
+    { "id": "signatureToAuthentication", "from": "assertionSignature", "to": "authentication", "label": "signed assertion", "classification": "日常登入", "variant": "emphasis", "route": "straight", "fromSide": "right", "toSide": "left" },
+    { "id": "registrationToPolicy", "from": "registration", "to": "rpPolicy", "label": "trust path + metadata", "classification": "RP 判定", "variant": "default", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [853, 205] },
+    { "id": "authenticationToVerification", "from": "authentication", "to": "rpVerification", "label": "challenge + RP 綁定", "classification": "RP 驗證", "variant": "default", "route": "straight", "fromSide": "right", "toSide": "left" }
+  ]
+}

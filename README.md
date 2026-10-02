@@ -9,6 +9,9 @@ A public, evidence-governed workbench within the [NVM Knowledge Hub](https://sam
 - **Decision Matrix** — illustrative selection profiles, never unqualified product specifications
 - **SharePoint Taxonomy** — canonical and operational metadata for later Copilot use
 - **Content Templates** — reusable, functional outlines for governed authoring
+- **Application Atlas** — 18 bilingual cases with persistent-state flows, public sources and explicit limits
+- **FIDO2 Security** — protocol semantics, implementation examples and hardware assurance boundaries
+- **Foundry Roadmap** — 30 scoped claims from 19 milestones, with maturity filters and source evidence
 
 Canonical transfer fields:
 
@@ -17,6 +20,10 @@ Canonical transfer fields:
 ## Public boundary
 
 This repository contains public working material only. Vendor-specific qualification, confidential portfolio data, customer context and target-silicon results belong in the restricted company SharePoint edition.
+
+The `research/` files in this repository are curated public evidence ledgers, bilingual roadmap inputs and sanitized validation receipts required by the site or its checks. Local review transcripts, intermediate research, execution state and tool caches are not release inputs. Preserve those privately when preparing a public source branch.
+
+The standalone Studio retains its own source and deployment lineage. The broader NVM Knowledge Hub includes related learning material and an integrated whitepaper tool; updates to this repository do not replace that site's content or deployments.
 
 ## Local use
 
@@ -27,6 +34,16 @@ npm run dev
 ```
 
 Open `http://localhost:4175/`.
+
+For full browser validation, first run `npm run build` and keep `npm run preview` running on port 4175. With Playwright Chromium installed, run:
+
+```powershell
+npm run qa:i18n
+npm run qa:render
+npm run qa:roadmap
+```
+
+These checks cover both languages, all eight views, responsive layouts, keyboard navigation, source disclosure and roadmap filtering. QA output is local and ignored by Git.
 
 ## Build and deployment
 

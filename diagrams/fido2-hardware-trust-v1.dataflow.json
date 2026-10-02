@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "FIDO2 Hardware Trust — Two Ceremonies, Two Evidence Paths",
+    "subtitle": "Conceptual reference architecture · WebAuthn and CTAP do not mandate an SE, PUF or memory technology",
+    "locale": "en",
+    "animation": "trace",
+    "visual_preset": "editorial",
+    "quality_profile": "showcase",
+    "viewBox": [1080, 540],
+    "views": [
+      { "id": "registration-path", "label": "Registration", "focus": ["immutablePolicy", "attestationModel", "attestationStatement", "registration", "rpPolicy"], "note": "Optional attestation informs an RP policy decision during credential creation." },
+      { "id": "authentication-path", "label": "Authentication", "focus": ["deviceRoot", "credentialSource", "assertionSignature", "authentication", "rpVerification"], "note": "The RP-scoped credential key signs an assertion during routine authentication." },
+      { "id": "memory-boundary", "label": "Memory boundary", "focus": ["immutablePolicy", "deviceRoot", "attestationModel", "credentialSource"], "note": "OTP, PUF and updateable NVM are bounded implementation choices, not FIDO mandates." }
+    ],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "security": { "label": "Protected state or operation" },
+        "emphasis": { "label": "Standards-defined ceremony" },
+        "dashed": { "label": "Optional or model-dependent" },
+        "default": { "label": "Ceremony data flow" }
+      }
+    }
+  },
+  "stages": [
+    { "label": "Device Roots" },
+    { "label": "Protected State" },
+    { "label": "Secure Operation" },
+    { "label": "FIDO Ceremony" },
+    { "label": "RP Decision" }
+  ],
+  "nodes": [
+    { "id": "immutablePolicy", "type": "security", "label": "Lifecycle Anchor", "sublabel": "ROM / physical vs logical OTP", "tag": "implementation", "stage": 0, "row": 0, "width": 140 },
+    { "id": "deviceRoot", "type": "security", "label": "Device Root / KEK", "sublabel": "PUF / NVM / key ladder", "tag": "reconstruct + helper if PUF", "stage": 0, "row": 2, "width": 140 },
+    { "id": "attestationModel", "type": "security", "label": "Attestation Policy / Material", "sublabel": "Basic / Self / AttCA / AnonCA / None", "tag": "model-dependent", "stage": 1, "row": 0, "width": 176 },
+    { "id": "credentialSource", "type": "security", "label": "Credential Material", "sublabel": "stored / wrapped / regenerated", "tag": "key-material modality", "stage": 1, "row": 2, "width": 176 },
+    { "id": "attestationStatement", "type": "security", "label": "Attestation Statement", "sublabel": "optional provenance signal", "tag": "registration", "stage": 2, "row": 0, "width": 146 },
+    { "id": "assertionSignature", "type": "security", "label": "Assertion Signature", "sublabel": "RP-scoped credential key", "tag": "authentication", "stage": 2, "row": 2 },
+    { "id": "registration", "type": "backend", "label": "Registration", "sublabel": "credential creation", "tag": "WebAuthn", "stage": 3, "row": 0 },
+    { "id": "authentication", "type": "backend", "label": "Authentication", "sublabel": "challenge response", "tag": "WebAuthn", "stage": 3, "row": 2 },
+    { "id": "rpPolicy", "type": "external", "label": "RP Trust Policy", "sublabel": "metadata + local policy", "tag": "decision", "stage": 4, "row": 0 },
+    { "id": "rpVerification", "type": "external", "label": "RP Assertion Check", "sublabel": "stored public key", "tag": "decision", "stage": 4, "row": 2 }
+  ],
+  "flows": [
+    { "id": "policyToAttestation", "from": "immutablePolicy", "to": "attestationModel", "label": "policy or optional attestation material", "classification": "implementation-specific", "variant": "dashed", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [208, 205] },
+    { "id": "rootToCredential", "from": "deviceRoot", "to": "credentialSource", "label": "derive / unwrap / protect", "classification": "implementation-specific", "variant": "security", "route": "straight", "fromSide": "right", "toSide": "left", "labelDy": 53 },
+    { "id": "attestationToStatement", "from": "attestationModel", "to": "attestationStatement", "label": "sign or self-attest", "classification": "model-dependent", "variant": "dashed", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [416, 205] },
+    { "id": "credentialToSignature", "from": "credentialSource", "to": "assertionSignature", "label": "authorized key use", "classification": "private-key boundary", "variant": "security", "route": "straight", "fromSide": "right", "toSide": "left", "labelDy": 53 },
+    { "id": "statementToRegistration", "from": "attestationStatement", "to": "registration", "label": "attestation object", "classification": "optional", "variant": "emphasis", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [645, 205] },
+    { "id": "signatureToAuthentication", "from": "assertionSignature", "to": "authentication", "label": "signed assertion", "classification": "routine sign-in", "variant": "emphasis", "route": "straight", "fromSide": "right", "toSide": "left" },
+    { "id": "registrationToPolicy", "from": "registration", "to": "rpPolicy", "label": "trust path + metadata", "classification": "RP decision", "variant": "default", "route": "straight", "fromSide": "right", "toSide": "left", "labelAt": [853, 205] },
+    { "id": "authenticationToVerification", "from": "authentication", "to": "rpVerification", "label": "challenge + RP binding", "classification": "RP verification", "variant": "default", "route": "straight", "fromSide": "right", "toSide": "left", "labelDy": 53 }
+  ]
+}
