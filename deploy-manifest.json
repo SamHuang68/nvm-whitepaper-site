@@ -6,9 +6,9 @@
   "source": {
     "repository": "https://github.com/SamHuang68/nvm-whitepaper-site.git",
     "branch": "master",
-    "commit": "382ecaec4e5f66331bb8b50dc178ce0d73b48dcc",
-    "tree": "5010852c241c450dbba793a622ae77861ae20067",
-    "commitTime": "2026-10-03T06:49:46+08:00",
+    "commit": "ddd7c127bcc6adb836197d8fd2466af561860141",
+    "tree": "9efe7ce2493903b2d7860ea74922769219460d78",
+    "commitTime": "2026-10-03T15:04:17+08:00",
     "clean": true
   },
   "build": {
@@ -18,7 +18,7 @@
     "base": "./"
   },
   "inputs": {
-    "packageLockSHA256": "5c03ba3312fb9f35443f347d4dd334e975993c5c103d9324c340cbc642d5a3d0",
+    "packageLockSHA256": "78db5ad0a1c2a0659a17bcd605a94d521a97fc9618104b6bb29ad69a7970ec38",
     "povContractSHA256": "8cf2c9006670c334db39743a26bad4c9d43beed1c76c5da02e49ae97b8b928f1",
     "hubGovernanceReferenceSHA256": "a725edb5f213c37a91408a7234597f0a2c596a5ccf8f336e0efc83c76024869c"
   },
@@ -26,7 +26,7 @@
     "hashAlgorithm": "sha256",
     "canonicalization": "path<NUL>bytes<NUL>sha256<LF>; UTF-8 paths sorted bytewise; manifest excluded",
     "count": 9,
-    "artifactSetSHA256": "fae6614f94fcbf0abfdd8d993354f97a346346a7f9ab6d029cbb5774238e3d63",
+    "artifactSetSHA256": "870a17bb82407f63af0143e664b83c204395e37f995aa06fda203bc955c8e013",
     "files": [
       {
         "path": ".nojekyll",
@@ -34,46 +34,46 @@
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       {
-        "path": "assets/index-DUcemXbk.css",
-        "bytes": 84329,
-        "sha256": "76617695be772c8d05ac4f1399633603bf7c4dbc042ad8e646ddb9bd68cffdf5"
+        "path": "assets/index-BVgv9oAl.js",
+        "bytes": 324461,
+        "sha256": "139032110bb35a335417f86345bb30e8d9e679cfd587fc44beee45109cfbd582"
       },
       {
-        "path": "assets/index-TDdGOgPu.js",
-        "bytes": 323795,
-        "sha256": "0a207fe6ef4e6b9147db045da8d839e6289d77918bd483196ad62905f0084412"
+        "path": "assets/index-Cqfp8n-g.css",
+        "bytes": 84512,
+        "sha256": "fc5485c263aa1c034431b7f3c201b09330a8d183217c7a86318b7dd0a48d686d"
       },
       {
         "path": "fido2-hardware-trust-map-zh.html",
-        "bytes": 719362,
-        "sha256": "7813f5f6cad23cce241d4c5409ac7d024d1b7b401f8eea8f6ecdb6276a630444"
+        "bytes": 719549,
+        "sha256": "20a0ef3aa9836ae77c8aa7c9f14db2c860e0900b9cd0cb088ade86878c089aa9"
       },
       {
         "path": "fido2-hardware-trust-map.html",
-        "bytes": 719514,
-        "sha256": "d7617f20e799fd9d231240ccf5179673cc0f9e45433ffab2406b220bf3ca055d"
+        "bytes": 719681,
+        "sha256": "a0d56fa73a63ae8d4e15e38ed4b88ea27bca6176244b0e279a5fca6f8b187b5b"
       },
       {
         "path": "index.html",
-        "bytes": 12831,
-        "sha256": "1a24bad6dfc8079164569fa47fc631c7abdbdb9f86d801669f4b356078f7e6f8"
+        "bytes": 12949,
+        "sha256": "d06c131864ece7d7758a7e07e070d71814c54aef8774dbbef0b8f9d77b315940"
       },
       {
         "path": "nvm-state-path.html",
-        "bytes": 721668,
-        "sha256": "5637bb8099c555b346e09e6518f0b80abdf05c81c9c073fbe91f1c6e2f3ec070"
+        "bytes": 721853,
+        "sha256": "e66b51b66cf0a6542d23391e6718c25d10a72cf6f782e67efd3c20bf73f7e528"
       },
       {
         "path": "ocp-ai-nvm-opportunity-map-zh.html",
-        "bytes": 722721,
-        "sha256": "0bf5a8e86f0f968813769fab41eff204b945e8cd96f91ed6dcac46e5b3bc36d8"
+        "bytes": 722926,
+        "sha256": "a212533f4eceefd134efd24a5fd6d124e0e00045aee6e19dbe7c249025448eb2"
       },
       {
         "path": "ocp-ai-nvm-opportunity-map.html",
-        "bytes": 722654,
-        "sha256": "18f4d6f84d790b06a8a87fe6bac60f512dca4f6d25c0f1d4075338d86f07f1c2"
+        "bytes": 722839,
+        "sha256": "84cfa7bfeeeb29832fca510253e7c6498bbd34e2e1e2f163bf3f9a6f73184d90"
       }
     ]
   },
-  "releaseId": "sha256:69ea79b6782eaa3bd22a6d105e490b0f70278b4064796792cd2c15f08b3a7d35"
+  "releaseId": "sha256:57c83bcec9ac4f618a9f957e18b5ec4c0148ea4418f3247649df073b37ef9877"
 }
