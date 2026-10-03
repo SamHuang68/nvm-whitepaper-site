@@ -42,11 +42,19 @@ npm run qa:i18n
 npm run qa:render
 npm run qa:roadmap
 npm run qa:experience
+npm run qa:accessibility
+npm run qa:diagrams
 ```
 
 These checks cover both languages, all eight views, responsive layouts, keyboard navigation, source disclosure and roadmap filtering. QA output is local and ignored by Git.
 
 The experience regression also checks browser history, shareable matrix filters and exports, malformed chapter links, deferred panel creation, and clipboard success or manual recovery. Set `NVM_QA_BROWSER=msedge` and `NVM_QA_HEADED=1` to run that check in an installed, visible Microsoft Edge window. `NVM_QA_BASE` can target the published site for the same acceptance checks.
+
+`qa:accessibility` uses the already installed Playwright Chromium, Firefox and WebKit engines at 1280, 390 and 320 CSS pixels in both languages. It checks all eight views with axe-core (WCAG A/AA rules and best practices), tab-panel entry, skip navigation, menu escape, history focus, responsive table headers, descriptive control names and reduced motion. Chromium also verifies table headers in its platform accessibility tree and exercises forced colors. A missing engine fails the command; it does not install software. Set `NVM_QA_ENGINES=edge` for an installed Edge run, or a comma-separated engine list for a targeted rerun. Set `NVM_QA_ENGINE=firefox` or `webkit` to run the experience regression in those engines.
+
+These are automated browser-engine, viewport and semantic checks. WebKit is not Safari, a narrow viewport is not a physical phone, and an accessibility tree is not audible screen-reader testing. The report preserves axe's incomplete/manual-review items separately from violations. Physical iPhone/Android, Safari on Apple hardware, and VoiceOver/NVDA/Narrator listening still need a real-device/assistive-technology session; these checks do not establish complete WCAG conformance.
+
+`qa:diagrams` covers all five standalone diagrams in the same three engines and widths, with both themes, reachable toolbar targets, keyboard node focus, finder dismissal and an actual SVG download. After regenerating the pinned Archify HTML, run `npm run prepare:diagrams` to restore the main landmark, interactive SVG grouping, guided-view grouping, Chinese content language and mobile toolbar wrapping. `npm run check` verifies that this preparation is present; graph data and viewer runtime remain unchanged.
 
 ## Build and deployment
 

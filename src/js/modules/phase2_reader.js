@@ -15,7 +15,7 @@ export function renderPhase2Reader(container, language = 'en') {
       <dl data-pov-contract-id="${povContractId}" data-pov-scope-id="${povScopeId}"><div><dt>${U('whitepaper.author')}</dt><dd>${author}</dd></div><div><dt>${U('whitepaper.publisher')}</dt><dd>${editorialPublisher}</dd></div><div><dt>${U('whitepaper.pov')}</dt><dd title="${povScopeId}">${U('whitepaper.neutral')}</dd></div><div><dt>${U('whitepaper.status')}</dt><dd>${L(version)}</dd></div><div><dt>${U('whitepaper.reviewDate')}</dt><dd>${publishDate}</dd></div></dl>
     </header>
     <div class="reader-layout">
-      <aside class="reader-index">
+      <aside class="reader-index" aria-label="${U('whitepaper.chapterIndex')}">
         <p>${U('whitepaper.chapterIndex')}</p>
         <nav aria-label="${U('whitepaper.chapterNav')}">
           ${chapters.map((chapter) => `<a href="#chap-${chapter.id}"><b>${chapter.number}</b><span>${L(chapter.title)}</span></a>`).join('')}
@@ -32,9 +32,9 @@ export function renderPhase2Reader(container, language = 'en') {
             <dl class="evidence-contract"><div><dt>${U('whitepaper.evidenceClass')}</dt><dd>${L(chapter.evidenceClass)}</dd></div><div><dt>${U('whitepaper.limitation')}</dt><dd>${L(chapter.limitation)}</dd></div><div><dt>${U('whitepaper.openValidation')}</dt><dd>${L(chapter.openValidation)}</dd></div></dl>
           </article>
         `).join('')}
-        <aside class="paper-sources">
-          <div><p>${U('whitepaper.continue')}</p><h3>${U('whitepaper.hubTitle')}</h3></div>
-          <nav><a href="https://hub.samhuang68.org/memory-evidence.html">${U('whitepaper.openLedger')} <span>↗</span></a><a href="https://hub.samhuang68.org/memory-physics.html">${U('whitepaper.reviewPhysics')} <span>↗</span></a></nav>
+        <aside class="paper-sources" aria-labelledby="paper-sources-title">
+          <div><p>${U('whitepaper.continue')}</p><h3 id="paper-sources-title">${U('whitepaper.hubTitle')}</h3></div>
+          <nav aria-labelledby="paper-sources-title"><a href="https://hub.samhuang68.org/memory-evidence.html">${U('whitepaper.openLedger')} <span>↗</span></a><a href="https://hub.samhuang68.org/memory-physics.html">${U('whitepaper.reviewPhysics')} <span>↗</span></a></nav>
         </aside>
       </div>
     </div>

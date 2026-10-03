@@ -167,7 +167,7 @@ export function renderApplicationAtlas(container, language = 'en', options = {})
           <p>${escapeHtml(U('applications.explorerKicker'))}</p>
           <h3>${escapeHtml(U('applications.explorerTitle'))}</h3>
           <span>${escapeHtml(U('applications.explorerBody'))}</span>
-          <div class="atlas-explorer-list" aria-label="${escapeHtml(U('applications.explorerListAria'))}">
+          <div class="atlas-explorer-list" role="group" aria-label="${escapeHtml(U('applications.explorerListAria'))}">
             ${applicationAtlas.explorers.map((explorer, index) => {
               const boundaryId = `atlas-explorer-${explorer.id}-boundary`;
               return `

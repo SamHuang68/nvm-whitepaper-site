@@ -1,4 +1,4 @@
-.fido-security { --fido-green: #087d7d; --fido-copper: #9a5c24; --fido-rose: #b75752; }
+.fido-security { --fido-green: #076f70; --fido-copper: #87501f; --fido-rose: #b75752; }
 .fido-security .fido-heading h2 { max-width: 970px; }
 
 .fido-scope-banner {
@@ -65,7 +65,7 @@
 .fido-key-grid dl div { padding-top: 16px; border-top: 1px solid var(--line-light); }
 .fido-key-grid dt { margin-bottom: 7px; color: var(--fido-copper); font: 750 11px/1.45 var(--font-mono); letter-spacing: .07em; }
 .fido-key-grid dd { margin: 0; color: #3f5d65; font-size: 15px; line-height: 1.65; }
-.fido-key-grid footer { margin-top: auto; padding-top: 22px; color: #668087; font: 650 11px/1.5 var(--font-mono); }
+.fido-key-grid footer { margin-top: auto; padding-top: 22px; color: #526b73; font: 650 11px/1.5 var(--font-mono); }
 
 .fido-storage-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .fido-storage-grid article { min-width: 0; min-height: 440px; display: flex; flex-direction: column; padding: clamp(23px, 2.5vw, 34px); background: #fff; border: 1px solid var(--line-light); }
@@ -75,7 +75,7 @@
 .fido-storage-grid footer { display: grid; gap: 8px; margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line-light); }
 .fido-storage-grid footer b { color: var(--fido-copper); font: 750 10px/1.45 var(--font-mono); letter-spacing: .08em; }
 .fido-storage-grid footer span { color: #2b4d56; font-size: 15px; line-height: 1.58; }
-.fido-storage-grid footer small { color: #668087; font: 650 11px/1.5 var(--font-mono); }
+.fido-storage-grid footer small { color: #526b73; font: 650 11px/1.5 var(--font-mono); }
 .fido-backup-axis { margin-top: 24px; padding: clamp(24px, 3vw, 38px); background: var(--midnight); color: #fff; }
 .fido-backup-axis > header { display: grid; grid-template-columns: minmax(180px, .45fr) minmax(0, 1.55fr); gap: 26px; align-items: end; margin-bottom: 24px; padding-bottom: 22px; border-bottom: 1px solid rgba(113, 236, 227, .22); }
 .fido-backup-axis > header p { margin: 0; color: var(--aqua); font: 750 11px/1.45 var(--font-mono); letter-spacing: .08em; }
@@ -121,7 +121,7 @@
 .fido-memory-table tbody th { color: var(--ink); font-size: 17px; line-height: 1.45; }
 .fido-memory-table td { color: #3f5d65; font-size: 15px; line-height: 1.65; }
 .fido-memory-table td span { display: inline-block; padding: 7px 8px; background: #e2f0ed; color: #06666a; font: 750 10px/1.45 var(--font-mono); letter-spacing: .04em; }
-.fido-memory-table td small { display: block; margin-top: 9px; color: #668087; font: 650 11px/1.5 var(--font-mono); }
+.fido-memory-table td small { display: block; margin-top: 9px; color: #526b73; font: 650 11px/1.5 var(--font-mono); }
 
 .fido-examples-intro { max-width: 880px; margin: -10px 0 32px; color: var(--slate); font-size: 17px; line-height: 1.7; }
 .fido-example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
@@ -132,7 +132,7 @@
 .fido-example-grid h4 { margin: 44px 0 14px; font-size: clamp(22px, 1.8vw, 28px); line-height: 1.18; }
 .fido-example-grid article > strong { color: var(--fido-green); font-size: 15px; line-height: 1.55; }
 .fido-example-grid article > p { margin: 20px 0 24px; color: #3f5d65; font-size: 15px; line-height: 1.66; }
-.fido-example-grid footer { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line-light); color: #668087; font: 650 11px/1.5 var(--font-mono); }
+.fido-example-grid footer { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--line-light); color: #526b73; font: 650 11px/1.5 var(--font-mono); }
 
 .fido-assurance-list { border-top: 1px solid var(--line-light); }
 .fido-assurance-list article { display: grid; grid-template-columns: minmax(300px, .55fr) minmax(0, 1.45fr); border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); border-left: 1px solid var(--line-light); background: #fff; }
@@ -145,7 +145,7 @@
 .fido-assurance-list dl div { padding: 28px; border-left: 1px solid var(--line-light); }
 .fido-assurance-list dt { margin-bottom: 16px; color: var(--fido-green); font: 750 10px/1.45 var(--font-mono); letter-spacing: .08em; }
 .fido-assurance-list dd { margin: 0; color: #3f5d65; font-size: 15px; line-height: 1.66; }
-.fido-assurance-list dl small { display: block; margin-top: 18px; color: #668087; font: 650 10px/1.55 var(--font-mono); }
+.fido-assurance-list dl small { display: block; margin-top: 18px; color: #526b73; font: 650 10px/1.55 var(--font-mono); }
 .fido-assurance-list .is-caution { background: #f4ece4; }
 .fido-assurance-list .is-caution dt { color: var(--fido-copper); }
 
@@ -167,7 +167,7 @@
 .fido-claim-list p { margin: 0 0 10px; color: var(--ink); font-size: 17px; line-height: 1.55; }
 .fido-claim-list b { color: var(--fido-rose); font: 800 10px/1.45 var(--font-mono); letter-spacing: .08em; }
 .fido-claim-list strong { color: #3d5d65; font-size: 16px; line-height: 1.65; font-weight: 500; }
-.fido-claim-list article > small { grid-column: 3; color: #668087; font: 650 11px/1.5 var(--font-mono); }
+.fido-claim-list article > small { grid-column: 3; color: #526b73; font: 650 11px/1.5 var(--font-mono); }
 
 .fido-gates > ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
 .fido-gates > ol li { min-height: 145px; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 14px; padding: 26px; background: #fff; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); }
