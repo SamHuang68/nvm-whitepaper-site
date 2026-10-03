@@ -20,7 +20,7 @@ export function renderPhase3Templates(container, language = 'en') {
             <p class="template-audience">${L(template.targetAudience)}</p>
             <p class="template-summary">${L(template.summary)}</p>
             <ol>${template.sections.map((section, sectionIndex) => `<li><span>${String(sectionIndex + 1).padStart(2, '0')}</span><div><b>${L(section.heading)}</b><p>${L(section.body)}</p></div></li>`).join('')}</ol>
-            <button class="copy-button" type="button" data-copy-outline="${escapeAttribute(outline)}">${U('templates.copy')} <span aria-hidden="true">＋</span></button>
+            <button class="copy-button" type="button" aria-label="${escapeAttribute(`${U('templates.copy')}: ${L(template.title)}`)}" data-copy-outline="${escapeAttribute(outline)}">${U('templates.copy')} <span aria-hidden="true">＋</span></button>
             <div class="template-copy-fallback" data-copy-fallback hidden>
               <p id="outline-help-${index}">${U('templates.copyUnavailable')}</p>
               <label for="outline-manual-${index}">${U('templates.manualLabel')}</label>

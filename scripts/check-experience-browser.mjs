@@ -1,12 +1,16 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 
 const base = process.env.NVM_QA_BASE || 'http://127.0.0.1:4175/';
 const output = path.resolve(import.meta.dirname, '..', 'qa-output', 'experience');
 fs.mkdirSync(output, { recursive: true });
-const browser = await chromium.launch({
+const engineName = process.env.NVM_QA_ENGINE || 'chromium';
+const engine = { chromium, firefox, webkit }[engineName];
+assert.ok(engine, `Unknown browser engine: ${engineName}`);
+assert.ok(!process.env.NVM_QA_BROWSER || engineName === 'chromium', 'Browser channels require the Chromium engine');
+const browser = await engine.launch({
   headless: process.env.NVM_QA_HEADED !== '1',
   ...(process.env.NVM_QA_BROWSER ? { channel: process.env.NVM_QA_BROWSER } : {})
 });
@@ -125,7 +129,7 @@ try {
     results.push({ language, width, initialDom, history: 'pass', matrixReloadAndExport: 'pass', chapterFragments: 'pass', clipboardModes: 'pass' });
     await page.close();
   }
-  fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify({ base, browser: process.env.NVM_QA_BROWSER || 'chromium', results }, null, 2));
+  fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify({ base, browser: process.env.NVM_QA_BROWSER || engineName, version: browser.version(), results }, null, 2));
   console.log('PASS: 2 languages × 3 widths; deferred panels, history, filter reload/export, chapter fragments and four clipboard outcomes.');
 } finally {
   await browser.close();

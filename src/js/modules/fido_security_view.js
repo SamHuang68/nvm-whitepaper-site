@@ -106,7 +106,7 @@ export function renderFidoSecurity(container, language = 'en') {
           </article>
         `).join('')}
       </div>
-      <div class="fido-backup-axis" aria-labelledby="fido-backup-axis-title">
+      <div class="fido-backup-axis" role="group" aria-labelledby="fido-backup-axis-title">
         <header><p>${escapeHtml(U('fido.backup.kicker'))}</p><h4 id="fido-backup-axis-title">${escapeHtml(U('fido.backup.title'))}</h4></header>
         <div>
           ${fidoSecurity.backupEligibility.map((item) => `
@@ -182,9 +182,9 @@ export function renderFidoSecurity(container, language = 'en') {
               <b>${escapeHtml(L(item.certificationClaimStatus))}</b>
             </header>
             <dl>
-              <div><dt>${escapeHtml(U('fido.assurance.outcome'))}</dt><dd>${escapeHtml(L(item.outcome))}</dd><small>${escapeHtml(item.requirementStatus)} · ${sourceTrail(item.requirementSourceIds)}</small></div>
-              <div><dt>${escapeHtml(U('fido.assurance.patterns'))}</dt><dd>${escapeHtml(L(item.patterns))}</dd><small>${escapeHtml(item.patternStatus)} · ${sourceTrail(item.patternSourceIds)}</small></div>
-              <div class="is-caution"><dt>${escapeHtml(U('fido.assurance.caution'))}</dt><dd>${escapeHtml(L(item.caution))}</dd><small>${escapeHtml(U('fido.assurance.toe'))}: ${escapeHtml(L(item.toeScope))} · ${sourceTrail(item.cautionSourceIds)}</small></div>
+              <div><dt>${escapeHtml(U('fido.assurance.outcome'))}</dt><dd>${escapeHtml(L(item.outcome))}<small>${escapeHtml(item.requirementStatus)} · ${sourceTrail(item.requirementSourceIds)}</small></dd></div>
+              <div><dt>${escapeHtml(U('fido.assurance.patterns'))}</dt><dd>${escapeHtml(L(item.patterns))}<small>${escapeHtml(item.patternStatus)} · ${sourceTrail(item.patternSourceIds)}</small></dd></div>
+              <div class="is-caution"><dt>${escapeHtml(U('fido.assurance.caution'))}</dt><dd>${escapeHtml(L(item.caution))}<small>${escapeHtml(U('fido.assurance.toe'))}: ${escapeHtml(L(item.toeScope))} · ${sourceTrail(item.cautionSourceIds)}</small></dd></div>
             </dl>
           </article>
         `).join('')}
@@ -231,7 +231,7 @@ export function renderFidoSecurity(container, language = 'en') {
           <article>
             <span>${String(index + 1).padStart(2, '0')}</span>
             <div><b>${escapeHtml(source.class)}</b><h4>${escapeHtml(L(source.label))}</h4><p>${escapeHtml(L(source.actor))} · ${escapeHtml(L(source.locator))}</p></div>
-            <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(U('fido.sources.open'))}<span aria-hidden="true">↗</span></a>
+            <a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer" aria-label="${escapeHtml(`${U('fido.sources.open')}: ${L(source.label)}`)}">${escapeHtml(U('fido.sources.open'))}<span aria-hidden="true">↗</span></a>
           </article>
         `).join('')}
       </div>

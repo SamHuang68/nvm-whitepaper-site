@@ -132,7 +132,8 @@ body:not([data-active-view="overview"]) .studio-hero { min-height: 460px; paddin
 .template-copy-fallback label { display: block; margin-bottom: 8px; font-weight: 700; }
 .template-copy-fallback textarea { display: block; width: 100%; padding: 14px; color: var(--midnight); background: #fff; border: 1px solid var(--line-light); font: 15px/1.6 var(--font-sans); resize: vertical; }
 
-:focus-visible { outline: 3px solid var(--copper); outline-offset: 4px; }
+:focus-visible { outline: 3px solid #a56c34; outline-offset: 4px; }
+.studio-panel:focus-visible { outline-offset: -3px; }
 ::selection { background: var(--cyan); color: var(--midnight); }
 
 html:lang(zh-Hant) body { font-family: var(--font-cjk); line-height: 1.75; }

@@ -158,7 +158,8 @@ function commitLanguage(language, {
   }
 }
 
-function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {}) {
+function routeFromLocation({ scrollChapter = false, syncLanguage = false, restoreFocus = false } = {}) {
+  const focusView = restoreFocus && !!document.activeElement?.closest('.studio-panel, .view-tab');
   const url = new URL(window.location.href);
   if (syncLanguage) {
     const routeLanguage = languageFromLocation();
@@ -177,7 +178,7 @@ function routeFromLocation({ scrollChapter = false, syncLanguage = false } = {})
     window.history.replaceState({ view: next, language: currentLanguage }, '', `${url.pathname}${url.search}`);
   }
 
-  setView(next, { updateHistory: false, refresh: true });
+  setView(next, { updateHistory: false, refresh: true, focus: focusView });
   if (chapterRoute && next === 'whitepaper' && scrollChapter) {
     let chapterId = url.hash.slice(1);
     try { chapterId = decodeURIComponent(chapterId); } catch { /* An invalid fragment falls back to the view navigation. */ }
@@ -202,7 +203,7 @@ function initTabs() {
       setView(tabs[target].dataset.view, { focus: true });
     });
   });
-  window.addEventListener('popstate', () => routeFromLocation({ scrollChapter: true, syncLanguage: true }));
+  window.addEventListener('popstate', () => routeFromLocation({ scrollChapter: true, syncLanguage: true, restoreFocus: true }));
 }
 
 function syncMenuLabel() {

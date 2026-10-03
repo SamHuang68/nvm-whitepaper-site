@@ -8,7 +8,7 @@
     "build": "node scripts/build-pages.mjs --preview",
     "build:pages": "node scripts/build-pages.mjs --release",
     "preview": "vite preview --port 4175",
-    "check": "node --check scripts/build-pages.mjs && node --check scripts/check-deploy-lineage.mjs && node --check scripts/check-pov.mjs && node --check scripts/check-matrix-evidence.mjs && node --check scripts/check-knowledge-contract.mjs && node --check scripts/check-i18n.mjs && node --check scripts/fido-content-semantics.mjs && node --check scripts/check-fido-semantic-rules.mjs && node --check scripts/check-application-atlas.mjs && node --check scripts/check-fido-security.mjs && node --check src/data/i18n.js && node --check src/data/application_atlas.js && node --check src/data/fido_security.js && node --check src/js/modules/application_atlas_view.js && node --check src/js/modules/fido_security_view.js && node --check src/js/app.js && node scripts/check-public.mjs && node scripts/check-pov.mjs && node scripts/check-matrix-evidence.mjs && node scripts/check-knowledge-contract.mjs && node scripts/check-i18n.mjs && node scripts/check-fido-semantic-rules.mjs && node scripts/check-application-atlas.mjs && node scripts/check-fido-security.mjs && node scripts/檢查晶圓路線圖.mjs",
+    "check": "node --check scripts/build-pages.mjs && node --check scripts/check-deploy-lineage.mjs && node --check scripts/check-pov.mjs && node --check scripts/check-matrix-evidence.mjs && node --check scripts/check-knowledge-contract.mjs && node --check scripts/check-i18n.mjs && node --check scripts/fido-content-semantics.mjs && node --check scripts/check-fido-semantic-rules.mjs && node --check scripts/check-application-atlas.mjs && node --check scripts/check-fido-security.mjs && node --check src/data/i18n.js && node --check src/data/application_atlas.js && node --check src/data/fido_security.js && node --check src/js/modules/application_atlas_view.js && node --check src/js/modules/fido_security_view.js && node --check src/js/app.js && node scripts/check-public.mjs && node scripts/check-pov.mjs && node scripts/check-matrix-evidence.mjs && node scripts/check-knowledge-contract.mjs && node scripts/check-i18n.mjs && node scripts/check-fido-semantic-rules.mjs && node scripts/check-application-atlas.mjs && node scripts/check-fido-security.mjs && node scripts/檢查晶圓路線圖.mjs && node scripts/prepare-viewer-accessibility.mjs --check",
     "check:deploy": "node scripts/check-deploy-lineage.mjs --remote",
     "check:deploy:live": "node scripts/check-deploy-lineage.mjs --live",
     "check:dist": "node scripts/check-deploy-lineage.mjs --expect-release",
@@ -17,9 +17,13 @@
     "qa:i18n": "node scripts/check-i18n-browser.mjs",
     "check:roadmap": "node scripts/檢查晶圓路線圖.mjs",
     "qa:roadmap": "node scripts/驗證晶圓路線圖互動.mjs",
-    "qa:experience": "node scripts/check-experience-browser.mjs"
+    "qa:experience": "node scripts/check-experience-browser.mjs",
+    "qa:accessibility": "node scripts/check-accessibility-browser.mjs",
+    "prepare:diagrams": "node scripts/prepare-viewer-accessibility.mjs",
+    "qa:diagrams": "node scripts/check-diagrams-browser.mjs"
   },
   "devDependencies": {
+    "axe-core": "4.13.0",
     "playwright": "^1.55.0",
     "vite": "^8.2.2"
   }

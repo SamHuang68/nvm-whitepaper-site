@@ -19,10 +19,10 @@ export function renderMatrix(container, language = 'en') {
       </div>
     </section>
     <div class="decision-table-wrap">
-      <table class="decision-table">
+      <table class="decision-table" role="table">
         <caption>${U('matrix.caption')}</caption>
-        <thead><tr><th scope="col">${U('matrix.stateProfile')}</th><th scope="col">${U('matrix.technologyFamily')}</th><th scope="col">${U('matrix.contractNode')}</th><th scope="col">${U('matrix.boundary')}</th><th scope="col">${U('matrix.candidateFit')}</th><th scope="col">${U('matrix.evidenceGate')}</th></tr></thead>
-        <tbody id="decision-body">${renderRows(nvmIpSpecs, language)}</tbody>
+        <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader">${U('matrix.stateProfile')}</th><th scope="col" role="columnheader">${U('matrix.technologyFamily')}</th><th scope="col" role="columnheader">${U('matrix.contractNode')}</th><th scope="col" role="columnheader">${U('matrix.boundary')}</th><th scope="col" role="columnheader">${U('matrix.candidateFit')}</th><th scope="col" role="columnheader">${U('matrix.evidenceGate')}</th></tr></thead>
+        <tbody id="decision-body" role="rowgroup">${renderRows(nvmIpSpecs, language)}</tbody>
       </table>
     </div>
     <aside class="selector-gate">
@@ -52,13 +52,13 @@ function renderRows(items, language = 'en') {
   const U = (key, variables = {}) => t(key, language, variables);
   const L = (value) => localize(value, language);
   return items.map((item) => `
-    <tr data-record-id="${item.id}">
-      <th scope="row" data-label="${U('matrix.stateProfile')}"><strong>${L(item.profile)}</strong><small>${L(item.updateModel)}</small></th>
-      <td data-label="${U('matrix.technologyFamily')}"><span class="family-chip">${L(item.family)}</span></td>
-      <td data-label="${U('matrix.contractNode')}"><strong>${L(item.contract)}</strong><small class="matrix-secondary"><b>${U('matrix.nodeLens')}</b>${L(item.nodeLens)}</small></td>
-      <td data-label="${U('matrix.boundary')}">${L(item.boundary)}</td>
-      <td data-label="${U('matrix.candidateFit')}">${L(item.strongestFit)}</td>
-      <td data-label="${U('matrix.evidenceGate')}"><div class="matrix-evidence">
+    <tr role="row" data-record-id="${item.id}">
+      <th scope="row" role="rowheader" data-label="${U('matrix.stateProfile')}"><strong>${L(item.profile)}</strong><small>${L(item.updateModel)}</small></th>
+      <td role="cell" data-label="${U('matrix.technologyFamily')}"><span class="family-chip">${L(item.family)}</span></td>
+      <td role="cell" data-label="${U('matrix.contractNode')}"><strong>${L(item.contract)}</strong><small class="matrix-secondary"><b>${U('matrix.nodeLens')}</b>${L(item.nodeLens)}</small></td>
+      <td role="cell" data-label="${U('matrix.boundary')}">${L(item.boundary)}</td>
+      <td role="cell" data-label="${U('matrix.candidateFit')}">${L(item.strongestFit)}</td>
+      <td role="cell" data-label="${U('matrix.evidenceGate')}"><div class="matrix-evidence">
         <span class="status-chip">${L(item.sourceActor)} · ${L(item.evidenceClass)}</span>
         <a href="${item.sourceUrl}" target="_blank" rel="noreferrer">${item.sourceId} <span aria-hidden="true">↗</span></a>
         <small><b>${U('matrix.scope')}</b>${L(item.scope)}</small><small><b>${U('matrix.limitation')}</b>${L(item.limitation)}</small><small class="matrix-open"><b>${U('matrix.openValidation')}</b>${L(item.openValidation)}</small>
